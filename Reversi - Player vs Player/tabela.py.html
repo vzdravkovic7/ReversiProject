@@ -1,0 +1,606 @@
+<html>
+<head>
+<title>tabela.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #a9b7c6;}
+.s1 { color: #6897bb;}
+.s2 { color: #6a8759;}
+.s3 { color: #cc7832;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+tabela.py</font>
+</center></td></tr></table>
+<pre><span class="s0">ROWS = </span><span class="s1">8</span>
+<span class="s0">COLS = </span><span class="s1">8</span>
+<span class="s0">WHITE_DOT = </span><span class="s2">u&quot;</span><span class="s3">\u25CF</span><span class="s2">&quot;</span>
+<span class="s0">BLACK_DOT = </span><span class="s2">u&quot;</span><span class="s3">\u25CB</span><span class="s2">&quot;</span>
+
+
+<span class="s3">class </span><span class="s0">Tabela(object):</span>
+    <span class="s3">def </span><span class="s0">__init__(self</span><span class="s3">, </span><span class="s0">rows</span><span class="s3">, </span><span class="s0">cols):</span>
+        <span class="s0">self._tabela = {}</span>
+        <span class="s0">self._rows = rows</span>
+        <span class="s0">self._cols = cols</span>
+
+        <span class="s0">self._tabela = self.create_table_start()</span>
+
+    <span class="s3">def </span><span class="s0">create_table_start(self):</span>
+        <span class="s3">for </span><span class="s0">i </span><span class="s3">in </span><span class="s0">range(self._rows):</span>
+            <span class="s3">for </span><span class="s0">j </span><span class="s3">in </span><span class="s0">range(self._cols):</span>
+                <span class="s0">self._tabela.update({(i</span><span class="s3">, </span><span class="s0">j): </span><span class="s2">&quot;O&quot;</span><span class="s0">})</span>
+                <span class="s3">if </span><span class="s0">(i == </span><span class="s1">3 </span><span class="s3">and </span><span class="s0">j == </span><span class="s1">3</span><span class="s0">) </span><span class="s3">or </span><span class="s0">(i == </span><span class="s1">4 </span><span class="s3">and </span><span class="s0">j == </span><span class="s1">4</span><span class="s0">):</span>
+                    <span class="s0">self._tabela[(i</span><span class="s3">, </span><span class="s0">j)] = </span><span class="s2">&quot;B&quot;</span>
+                <span class="s3">if </span><span class="s0">(i == </span><span class="s1">4 </span><span class="s3">and </span><span class="s0">j == </span><span class="s1">3</span><span class="s0">) </span><span class="s3">or </span><span class="s0">(i == </span><span class="s1">3 </span><span class="s3">and </span><span class="s0">j == </span><span class="s1">4</span><span class="s0">):</span>
+                    <span class="s0">self._tabela[(i</span><span class="s3">, </span><span class="s0">j)] = </span><span class="s2">&quot;W&quot;</span>
+        <span class="s3">return </span><span class="s0">self._tabela</span>
+
+    <span class="s3">def </span><span class="s0">update_table(self</span><span class="s3">, </span><span class="s0">izmena_tabele):</span>
+        <span class="s3">for </span><span class="s0">x </span><span class="s3">in </span><span class="s0">izmena_tabele.keys():</span>
+            <span class="s3">for </span><span class="s0">y </span><span class="s3">in </span><span class="s0">self._tabela.keys():</span>
+                <span class="s3">if </span><span class="s0">y == x:</span>
+                    <span class="s0">self._tabela[y] = izmena_tabele[x]</span>
+        <span class="s3">return </span><span class="s0">self._tabela</span>
+
+    <span class="s3">def </span><span class="s0">print_state(self</span><span class="s3">, </span><span class="s0">new_table):</span>
+        <span class="s0">self._tabela = self.update_table(new_table)</span>
+        <span class="s0">print(</span><span class="s2">&quot;_________________________________________________________________&quot;</span><span class="s0">)</span>
+        <span class="s0">red = </span><span class="s2">&quot;&quot;</span>
+        <span class="s3">for </span><span class="s0">polje </span><span class="s3">in </span><span class="s0">self._tabela.items():</span>
+            <span class="s3">if </span><span class="s0">polje[</span><span class="s1">1</span><span class="s0">] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                <span class="s0">red += </span><span class="s2">&quot; [  &quot; </span><span class="s0">+ BLACK_DOT + </span><span class="s2">&quot;  ]&quot;</span>
+            <span class="s3">elif </span><span class="s0">polje[</span><span class="s1">1</span><span class="s0">] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                <span class="s0">red += </span><span class="s2">&quot; [  &quot; </span><span class="s0">+ WHITE_DOT + </span><span class="s2">&quot;  ]&quot;</span>
+            <span class="s3">elif </span><span class="s0">polje[</span><span class="s1">1</span><span class="s0">] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                <span class="s0">red += </span><span class="s2">&quot; [  &quot; </span><span class="s0">+ </span><span class="s2">&quot; &quot; </span><span class="s0">+ </span><span class="s2">&quot;  ]&quot;</span>
+            <span class="s3">else</span><span class="s0">:</span>
+                <span class="s0">red += </span><span class="s2">&quot; [  &quot; </span><span class="s0">+ polje[</span><span class="s1">1</span><span class="s0">] + </span><span class="s2">&quot;  ]&quot;</span>
+            <span class="s3">if </span><span class="s0">polje[</span><span class="s1">0</span><span class="s0">][</span><span class="s1">1</span><span class="s0">] &gt;= </span><span class="s1">7</span><span class="s0">:</span>
+                <span class="s0">print(red)</span>
+                <span class="s0">print(</span><span class="s2">&quot;_________________________________________________________________&quot;</span><span class="s0">)</span>
+                <span class="s0">red = </span><span class="s2">&quot;&quot;</span>
+
+    <span class="s3">def </span><span class="s0">count_discs(self):</span>
+        <span class="s0">blacks = </span><span class="s1">0</span>
+        <span class="s0">whites = </span><span class="s1">0</span>
+        <span class="s3">for </span><span class="s0">x </span><span class="s3">in </span><span class="s0">self._tabela.keys():</span>
+            <span class="s3">if </span><span class="s0">self._tabela[x] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                <span class="s0">blacks += </span><span class="s1">1</span>
+            <span class="s3">if </span><span class="s0">self._tabela[x] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                <span class="s0">whites += </span><span class="s1">1</span>
+        <span class="s3">return </span><span class="s0">[blacks</span><span class="s3">, </span><span class="s0">whites]</span>
+
+    <span class="s3">def </span><span class="s0">moves(self</span><span class="s3">, </span><span class="s0">tabela_diskovi):</span>
+        <span class="s0">self._tabela = self.update_table(tabela_diskovi)</span>
+        <span class="s0">protivnicki_diskovi_za_obrtanje_up = {}</span>
+        <span class="s0">protivnicki_diskovi_za_obrtanje_left = {}</span>
+        <span class="s0">protivnicki_diskovi_za_obrtanje_down = {}</span>
+        <span class="s0">protivnicki_diskovi_za_obrtanje_right = {}</span>
+        <span class="s0">protivnicki_diskovi_za_obrtanje_up_left = {}</span>
+        <span class="s0">protivnicki_diskovi_za_obrtanje_down_right = {}</span>
+        <span class="s0">protivnicki_diskovi_za_obrtanje_up_right = {}</span>
+        <span class="s0">protivnicki_diskovi_za_obrtanje_down_left = {}</span>
+        <span class="s0">option_list = []</span>
+        <span class="s0">options = {}</span>
+        <span class="s0">i = </span><span class="s1">0</span>
+        <span class="s3">for </span><span class="s0">x </span><span class="s3">in </span><span class="s0">self._tabela.keys():</span>
+            <span class="s3">if </span><span class="s0">self._tabela[x][</span><span class="s1">0</span><span class="s0">] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                <span class="s0">disc_counter_black = </span><span class="s1">0</span>
+                <span class="s3">while </span><span class="s0">(x[</span><span class="s1">0</span><span class="s0">] - disc_counter_black) &gt; </span><span class="s1">0</span><span class="s0">:</span>
+                    <span class="s0">disc_counter_black += </span><span class="s1">1</span>
+                    <span class="s0">y = (x[</span><span class="s1">0</span><span class="s0">] - disc_counter_black</span><span class="s3">, </span><span class="s0">x[</span><span class="s1">1</span><span class="s0">])</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                        <span class="s0">protivnicki_diskovi_za_obrtanje_up.update({y: </span><span class="s2">&quot;B&quot;</span><span class="s0">})</span>
+                    <span class="s3">elif </span><span class="s0">bool(protivnicki_diskovi_za_obrtanje_up):</span>
+                        <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                            <span class="s0">i += </span><span class="s1">1</span>
+                            <span class="s0">self._tabela[y] = str(i)</span>
+                            <span class="s0">protivnicki_diskovi_za_obrtanje_up.update({y: </span><span class="s2">&quot;B&quot;</span><span class="s0">})</span>
+                            <span class="s0">option_list.append({str(i): </span><span class="s2">&quot;Up&quot;</span><span class="s0">})</span>
+                            <span class="s0">options.update({i: protivnicki_diskovi_za_obrtanje_up})</span>
+                            <span class="s3">break</span>
+                        <span class="s3">else</span><span class="s0">:</span>
+                            <span class="s0">found = </span><span class="s3">False</span>
+                            <span class="s3">for </span><span class="s0">option </span><span class="s3">in </span><span class="s0">options.items():</span>
+                                <span class="s3">for </span><span class="s0">coordinate </span><span class="s3">in </span><span class="s0">option[</span><span class="s1">1</span><span class="s0">].keys():</span>
+                                    <span class="s3">if </span><span class="s0">coordinate == y:</span>
+                                        <span class="s0">found = </span><span class="s3">True</span>
+                                        <span class="s0">options[option[</span><span class="s1">0</span><span class="s0">]].update(protivnicki_diskovi_za_obrtanje_up)</span>
+                                        <span class="s3">break</span>
+                                <span class="s3">if </span><span class="s0">found:</span>
+                                    <span class="s3">break</span>
+                            <span class="s3">break</span>
+                    <span class="s3">else</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                <span class="s0">protivnicki_diskovi_za_obrtanje_up = {}</span>
+                <span class="s0">disc_counter_black = </span><span class="s1">0</span>
+                <span class="s3">while </span><span class="s0">(x[</span><span class="s1">1</span><span class="s0">] - disc_counter_black) &gt; </span><span class="s1">0</span><span class="s0">:</span>
+                    <span class="s0">disc_counter_black += </span><span class="s1">1</span>
+                    <span class="s0">y = (x[</span><span class="s1">0</span><span class="s0">]</span><span class="s3">, </span><span class="s0">x[</span><span class="s1">1</span><span class="s0">] - disc_counter_black)</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                        <span class="s0">protivnicki_diskovi_za_obrtanje_left.update({y: </span><span class="s2">&quot;B&quot;</span><span class="s0">})</span>
+                    <span class="s3">elif </span><span class="s0">bool(protivnicki_diskovi_za_obrtanje_left):</span>
+                        <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                            <span class="s0">i += </span><span class="s1">1</span>
+                            <span class="s0">self._tabela[y] = str(i)</span>
+                            <span class="s0">protivnicki_diskovi_za_obrtanje_left.update({y: </span><span class="s2">&quot;B&quot;</span><span class="s0">})</span>
+                            <span class="s0">option_list.append({str(i): </span><span class="s2">&quot;Left&quot;</span><span class="s0">})</span>
+                            <span class="s0">options.update({i: protivnicki_diskovi_za_obrtanje_left})</span>
+                            <span class="s3">break</span>
+                        <span class="s3">else</span><span class="s0">:</span>
+                            <span class="s0">found = </span><span class="s3">False</span>
+                            <span class="s3">for </span><span class="s0">option </span><span class="s3">in </span><span class="s0">options.items():</span>
+                                <span class="s3">for </span><span class="s0">coordinate </span><span class="s3">in </span><span class="s0">option[</span><span class="s1">1</span><span class="s0">].keys():</span>
+                                    <span class="s3">if </span><span class="s0">coordinate == y:</span>
+                                        <span class="s0">found = </span><span class="s3">True</span>
+                                        <span class="s0">options[option[</span><span class="s1">0</span><span class="s0">]].update(protivnicki_diskovi_za_obrtanje_left)</span>
+                                        <span class="s3">break</span>
+                                <span class="s3">if </span><span class="s0">found:</span>
+                                    <span class="s3">break</span>
+                            <span class="s3">break</span>
+                    <span class="s3">else</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                <span class="s0">protivnicki_diskovi_za_obrtanje_left = {}</span>
+                <span class="s0">disc_counter_black = </span><span class="s1">0</span>
+                <span class="s3">while </span><span class="s0">(x[</span><span class="s1">0</span><span class="s0">] + disc_counter_black) &lt; </span><span class="s1">7</span><span class="s0">:</span>
+                    <span class="s0">disc_counter_black += </span><span class="s1">1</span>
+                    <span class="s0">y = (x[</span><span class="s1">0</span><span class="s0">] + disc_counter_black</span><span class="s3">, </span><span class="s0">x[</span><span class="s1">1</span><span class="s0">])</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                        <span class="s0">protivnicki_diskovi_za_obrtanje_down.update({y: </span><span class="s2">&quot;B&quot;</span><span class="s0">})</span>
+                    <span class="s3">elif </span><span class="s0">bool(protivnicki_diskovi_za_obrtanje_down):</span>
+                        <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                            <span class="s0">i += </span><span class="s1">1</span>
+                            <span class="s0">self._tabela[y] = str(i)</span>
+                            <span class="s0">protivnicki_diskovi_za_obrtanje_down.update({y: </span><span class="s2">&quot;B&quot;</span><span class="s0">})</span>
+                            <span class="s0">option_list.append({str(i): </span><span class="s2">&quot;Down&quot;</span><span class="s0">})</span>
+                            <span class="s0">options.update({i: protivnicki_diskovi_za_obrtanje_down})</span>
+                            <span class="s3">break</span>
+                        <span class="s3">else</span><span class="s0">:</span>
+                            <span class="s0">found = </span><span class="s3">False</span>
+                            <span class="s3">for </span><span class="s0">option </span><span class="s3">in </span><span class="s0">options.items():</span>
+                                <span class="s3">for </span><span class="s0">coordinate </span><span class="s3">in </span><span class="s0">option[</span><span class="s1">1</span><span class="s0">].keys():</span>
+                                    <span class="s3">if </span><span class="s0">coordinate == y:</span>
+                                        <span class="s0">found = </span><span class="s3">True</span>
+                                        <span class="s0">options[option[</span><span class="s1">0</span><span class="s0">]].update(protivnicki_diskovi_za_obrtanje_down)</span>
+                                        <span class="s3">break</span>
+                                <span class="s3">if </span><span class="s0">found:</span>
+                                    <span class="s3">break</span>
+                            <span class="s3">break</span>
+                    <span class="s3">else</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                <span class="s0">protivnicki_diskovi_za_obrtanje_down = {}</span>
+                <span class="s0">disc_counter_black = </span><span class="s1">0</span>
+                <span class="s3">while </span><span class="s0">(x[</span><span class="s1">1</span><span class="s0">] + disc_counter_black) &lt; </span><span class="s1">7</span><span class="s0">:</span>
+                    <span class="s0">disc_counter_black += </span><span class="s1">1</span>
+                    <span class="s0">y = (x[</span><span class="s1">0</span><span class="s0">]</span><span class="s3">, </span><span class="s0">x[</span><span class="s1">1</span><span class="s0">] + disc_counter_black)</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                        <span class="s0">protivnicki_diskovi_za_obrtanje_right.update({y: </span><span class="s2">&quot;B&quot;</span><span class="s0">})</span>
+                    <span class="s3">elif </span><span class="s0">bool(protivnicki_diskovi_za_obrtanje_right):</span>
+                        <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                            <span class="s0">i += </span><span class="s1">1</span>
+                            <span class="s0">self._tabela[y] = str(i)</span>
+                            <span class="s0">protivnicki_diskovi_za_obrtanje_right.update({y: </span><span class="s2">&quot;B&quot;</span><span class="s0">})</span>
+                            <span class="s0">option_list.append({str(i): </span><span class="s2">&quot;Right&quot;</span><span class="s0">})</span>
+                            <span class="s0">options.update({i: protivnicki_diskovi_za_obrtanje_right})</span>
+                            <span class="s3">break</span>
+                        <span class="s3">else</span><span class="s0">:</span>
+                            <span class="s0">found = </span><span class="s3">False</span>
+                            <span class="s3">for </span><span class="s0">option </span><span class="s3">in </span><span class="s0">options.items():</span>
+                                <span class="s3">for </span><span class="s0">coordinate </span><span class="s3">in </span><span class="s0">option[</span><span class="s1">1</span><span class="s0">].keys():</span>
+                                    <span class="s3">if </span><span class="s0">coordinate == y:</span>
+                                        <span class="s0">found = </span><span class="s3">True</span>
+                                        <span class="s0">options[option[</span><span class="s1">0</span><span class="s0">]].update(protivnicki_diskovi_za_obrtanje_right)</span>
+                                        <span class="s3">break</span>
+                                <span class="s3">if </span><span class="s0">found:</span>
+                                    <span class="s3">break</span>
+                            <span class="s3">break</span>
+                    <span class="s3">else</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                <span class="s0">protivnicki_diskovi_za_obrtanje_right = {}</span>
+                <span class="s0">disc_counter_black = </span><span class="s1">0</span>
+                <span class="s3">while </span><span class="s0">(x[</span><span class="s1">0</span><span class="s0">] - disc_counter_black) &gt; </span><span class="s1">0 </span><span class="s3">and </span><span class="s0">(x[</span><span class="s1">1</span><span class="s0">] - disc_counter_black) &gt; </span><span class="s1">0</span><span class="s0">:</span>
+                    <span class="s0">disc_counter_black += </span><span class="s1">1</span>
+                    <span class="s0">y = (x[</span><span class="s1">0</span><span class="s0">] - disc_counter_black</span><span class="s3">, </span><span class="s0">x[</span><span class="s1">1</span><span class="s0">] - disc_counter_black)</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                        <span class="s0">protivnicki_diskovi_za_obrtanje_up_left.update({y: </span><span class="s2">&quot;B&quot;</span><span class="s0">})</span>
+                    <span class="s3">elif </span><span class="s0">bool(protivnicki_diskovi_za_obrtanje_up_left):</span>
+                        <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                            <span class="s0">i += </span><span class="s1">1</span>
+                            <span class="s0">self._tabela[y] = str(i)</span>
+                            <span class="s0">protivnicki_diskovi_za_obrtanje_up_left.update({y: </span><span class="s2">&quot;B&quot;</span><span class="s0">})</span>
+                            <span class="s0">option_list.append({str(i): </span><span class="s2">&quot;Up-Left&quot;</span><span class="s0">})</span>
+                            <span class="s0">options.update({i: protivnicki_diskovi_za_obrtanje_up_left})</span>
+                            <span class="s3">break</span>
+                        <span class="s3">else</span><span class="s0">:</span>
+                            <span class="s0">found = </span><span class="s3">False</span>
+                            <span class="s3">for </span><span class="s0">option </span><span class="s3">in </span><span class="s0">options.items():</span>
+                                <span class="s3">for </span><span class="s0">coordinate </span><span class="s3">in </span><span class="s0">option[</span><span class="s1">1</span><span class="s0">].keys():</span>
+                                    <span class="s3">if </span><span class="s0">coordinate == y:</span>
+                                        <span class="s0">found = </span><span class="s3">True</span>
+                                        <span class="s0">options[option[</span><span class="s1">0</span><span class="s0">]].update(protivnicki_diskovi_za_obrtanje_up_left)</span>
+                                        <span class="s3">break</span>
+                                <span class="s3">if </span><span class="s0">found:</span>
+                                    <span class="s3">break</span>
+                            <span class="s3">break</span>
+                    <span class="s3">else</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                <span class="s0">protivnicki_diskovi_za_obrtanje_up_left = {}</span>
+                <span class="s0">disc_counter_black = </span><span class="s1">0</span>
+                <span class="s3">while </span><span class="s0">(x[</span><span class="s1">0</span><span class="s0">] + disc_counter_black) &lt; </span><span class="s1">7 </span><span class="s3">and </span><span class="s0">(x[</span><span class="s1">1</span><span class="s0">] + disc_counter_black) &lt; </span><span class="s1">7</span><span class="s0">:</span>
+                    <span class="s0">disc_counter_black += </span><span class="s1">1</span>
+                    <span class="s0">y = (x[</span><span class="s1">0</span><span class="s0">] + disc_counter_black</span><span class="s3">, </span><span class="s0">x[</span><span class="s1">1</span><span class="s0">] + disc_counter_black)</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                        <span class="s0">protivnicki_diskovi_za_obrtanje_down_right.update({y: </span><span class="s2">&quot;B&quot;</span><span class="s0">})</span>
+                    <span class="s3">elif </span><span class="s0">bool(protivnicki_diskovi_za_obrtanje_down_right):</span>
+                        <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                            <span class="s0">i += </span><span class="s1">1</span>
+                            <span class="s0">self._tabela[y] = str(i)</span>
+                            <span class="s0">protivnicki_diskovi_za_obrtanje_down_right.update({y: </span><span class="s2">&quot;B&quot;</span><span class="s0">})</span>
+                            <span class="s0">option_list.append({str(i): </span><span class="s2">&quot;Down-right&quot;</span><span class="s0">})</span>
+                            <span class="s0">options.update({i: protivnicki_diskovi_za_obrtanje_down_right})</span>
+                            <span class="s3">break</span>
+                        <span class="s3">else</span><span class="s0">:</span>
+                            <span class="s0">found = </span><span class="s3">False</span>
+                            <span class="s3">for </span><span class="s0">option </span><span class="s3">in </span><span class="s0">options.items():</span>
+                                <span class="s3">for </span><span class="s0">coordinate </span><span class="s3">in </span><span class="s0">option[</span><span class="s1">1</span><span class="s0">].keys():</span>
+                                    <span class="s3">if </span><span class="s0">coordinate == y:</span>
+                                        <span class="s0">found = </span><span class="s3">True</span>
+                                        <span class="s0">options[option[</span><span class="s1">0</span><span class="s0">]].update(protivnicki_diskovi_za_obrtanje_down_right)</span>
+                                        <span class="s3">break</span>
+                                <span class="s3">if </span><span class="s0">found:</span>
+                                    <span class="s3">break</span>
+                            <span class="s3">break</span>
+                    <span class="s3">else</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                <span class="s0">protivnicki_diskovi_za_obrtanje_down_right = {}</span>
+                <span class="s0">disc_counter_black = </span><span class="s1">0</span>
+                <span class="s3">while </span><span class="s0">(x[</span><span class="s1">0</span><span class="s0">] - disc_counter_black) &gt; </span><span class="s1">0 </span><span class="s3">and </span><span class="s0">(x[</span><span class="s1">1</span><span class="s0">] + disc_counter_black) &lt; </span><span class="s1">7</span><span class="s0">:</span>
+                    <span class="s0">disc_counter_black += </span><span class="s1">1</span>
+                    <span class="s0">y = (x[</span><span class="s1">0</span><span class="s0">] - disc_counter_black</span><span class="s3">, </span><span class="s0">x[</span><span class="s1">1</span><span class="s0">] + disc_counter_black)</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                        <span class="s0">protivnicki_diskovi_za_obrtanje_up_right.update({y: </span><span class="s2">&quot;B&quot;</span><span class="s0">})</span>
+                    <span class="s3">elif </span><span class="s0">bool(protivnicki_diskovi_za_obrtanje_up_right):</span>
+                        <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                            <span class="s0">i += </span><span class="s1">1</span>
+                            <span class="s0">self._tabela[y] = str(i)</span>
+                            <span class="s0">protivnicki_diskovi_za_obrtanje_up_right.update({y: </span><span class="s2">&quot;B&quot;</span><span class="s0">})</span>
+                            <span class="s0">option_list.append({str(i): </span><span class="s2">&quot;Up-right&quot;</span><span class="s0">})</span>
+                            <span class="s0">options.update({i: protivnicki_diskovi_za_obrtanje_up_right})</span>
+                            <span class="s3">break</span>
+                        <span class="s3">else</span><span class="s0">:</span>
+                            <span class="s0">found = </span><span class="s3">False</span>
+                            <span class="s3">for </span><span class="s0">option </span><span class="s3">in </span><span class="s0">options.items():</span>
+                                <span class="s3">for </span><span class="s0">coordinate </span><span class="s3">in </span><span class="s0">option[</span><span class="s1">1</span><span class="s0">].keys():</span>
+                                    <span class="s3">if </span><span class="s0">coordinate == y:</span>
+                                        <span class="s0">found = </span><span class="s3">True</span>
+                                        <span class="s0">options[option[</span><span class="s1">0</span><span class="s0">]].update(protivnicki_diskovi_za_obrtanje_up_right)</span>
+                                        <span class="s3">break</span>
+                                <span class="s3">if </span><span class="s0">found:</span>
+                                    <span class="s3">break</span>
+                            <span class="s3">break</span>
+                    <span class="s3">else</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                <span class="s0">protivnicki_diskovi_za_obrtanje_up_right = {}</span>
+                <span class="s0">disc_counter_black = </span><span class="s1">0</span>
+                <span class="s3">while </span><span class="s0">(x[</span><span class="s1">0</span><span class="s0">] + disc_counter_black) &lt; </span><span class="s1">7 </span><span class="s3">and </span><span class="s0">(x[</span><span class="s1">1</span><span class="s0">] - disc_counter_black) &gt; </span><span class="s1">0</span><span class="s0">:</span>
+                    <span class="s0">disc_counter_black += </span><span class="s1">1</span>
+                    <span class="s0">y = (x[</span><span class="s1">0</span><span class="s0">] + disc_counter_black</span><span class="s3">, </span><span class="s0">x[</span><span class="s1">1</span><span class="s0">] - disc_counter_black)</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                        <span class="s0">protivnicki_diskovi_za_obrtanje_down_left.update({y: </span><span class="s2">&quot;B&quot;</span><span class="s0">})</span>
+                    <span class="s3">elif </span><span class="s0">bool(protivnicki_diskovi_za_obrtanje_down_left):</span>
+                        <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                            <span class="s0">i += </span><span class="s1">1</span>
+                            <span class="s0">self._tabela[y] = str(i)</span>
+                            <span class="s0">protivnicki_diskovi_za_obrtanje_down_left.update({y: </span><span class="s2">&quot;B&quot;</span><span class="s0">})</span>
+                            <span class="s0">option_list.append({str(i): </span><span class="s2">&quot;Down-left&quot;</span><span class="s0">})</span>
+                            <span class="s0">options.update({i: protivnicki_diskovi_za_obrtanje_down_left})</span>
+                            <span class="s3">break</span>
+                        <span class="s3">else</span><span class="s0">:</span>
+                            <span class="s0">found = </span><span class="s3">False</span>
+                            <span class="s3">for </span><span class="s0">option </span><span class="s3">in </span><span class="s0">options.items():</span>
+                                <span class="s3">for </span><span class="s0">coordinate </span><span class="s3">in </span><span class="s0">option[</span><span class="s1">1</span><span class="s0">].keys():</span>
+                                    <span class="s3">if </span><span class="s0">coordinate == y:</span>
+                                        <span class="s0">found = </span><span class="s3">True</span>
+                                        <span class="s0">options[option[</span><span class="s1">0</span><span class="s0">]].update(protivnicki_diskovi_za_obrtanje_down_left)</span>
+                                        <span class="s3">break</span>
+                                <span class="s3">if </span><span class="s0">found:</span>
+                                    <span class="s3">break</span>
+                            <span class="s3">break</span>
+                    <span class="s3">else</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                <span class="s0">protivnicki_diskovi_za_obrtanje_down_left = {}</span>
+        <span class="s3">return </span><span class="s0">[option_list</span><span class="s3">, </span><span class="s0">options]</span>
+
+    <span class="s3">def </span><span class="s0">make_a_move_player(self</span><span class="s3">, </span><span class="s0">options</span><span class="s3">, </span><span class="s0">option):</span>
+        <span class="s0">self._tabela = self.update_table(options[option])</span>
+        <span class="s3">for </span><span class="s0">x </span><span class="s3">in </span><span class="s0">self._tabela.keys():</span>
+            <span class="s3">if </span><span class="s0">self._tabela[x][</span><span class="s1">0</span><span class="s0">] != </span><span class="s2">&quot;W&quot; </span><span class="s3">and </span><span class="s0">self._tabela[x][</span><span class="s1">0</span><span class="s0">] != </span><span class="s2">&quot;B&quot; </span><span class="s3">and </span><span class="s0">self._tabela[x][</span><span class="s1">0</span><span class="s0">] != </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                <span class="s0">self._tabela[x] = </span><span class="s2">&quot;O&quot;</span>
+        <span class="s3">return </span><span class="s0">self._tabela</span>
+
+    <span class="s3">def </span><span class="s0">AI_moves(self</span><span class="s3">, </span><span class="s0">tabela_diskovi):</span>
+        <span class="s0">self._tabela = self.update_table(tabela_diskovi)</span>
+        <span class="s0">protivnicki_diskovi_za_obrtanje_up = {}</span>
+        <span class="s0">protivnicki_diskovi_za_obrtanje_left = {}</span>
+        <span class="s0">protivnicki_diskovi_za_obrtanje_down = {}</span>
+        <span class="s0">protivnicki_diskovi_za_obrtanje_right = {}</span>
+        <span class="s0">protivnicki_diskovi_za_obrtanje_up_left = {}</span>
+        <span class="s0">protivnicki_diskovi_za_obrtanje_down_right = {}</span>
+        <span class="s0">protivnicki_diskovi_za_obrtanje_up_right = {}</span>
+        <span class="s0">protivnicki_diskovi_za_obrtanje_down_left = {}</span>
+        <span class="s0">options = {}</span>
+        <span class="s0">option_list = []</span>
+        <span class="s0">i = </span><span class="s1">0</span>
+        <span class="s3">for </span><span class="s0">x </span><span class="s3">in </span><span class="s0">self._tabela.keys():</span>
+            <span class="s3">if </span><span class="s0">self._tabela[x][</span><span class="s1">0</span><span class="s0">] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                <span class="s0">disc_counter_white = </span><span class="s1">0</span>
+                <span class="s3">while </span><span class="s0">(x[</span><span class="s1">0</span><span class="s0">] - disc_counter_white) &gt; </span><span class="s1">0</span><span class="s0">:</span>
+                    <span class="s0">disc_counter_white += </span><span class="s1">1</span>
+                    <span class="s0">y = (x[</span><span class="s1">0</span><span class="s0">] - disc_counter_white</span><span class="s3">, </span><span class="s0">x[</span><span class="s1">1</span><span class="s0">])</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                        <span class="s0">protivnicki_diskovi_za_obrtanje_up.update({y: </span><span class="s2">&quot;W&quot;</span><span class="s0">})</span>
+                    <span class="s3">elif </span><span class="s0">bool(protivnicki_diskovi_za_obrtanje_up):</span>
+                        <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                            <span class="s0">i += </span><span class="s1">1</span>
+                            <span class="s0">self._tabela[y] = str(i)</span>
+                            <span class="s0">protivnicki_diskovi_za_obrtanje_up.update({y: </span><span class="s2">&quot;W&quot;</span><span class="s0">})</span>
+                            <span class="s0">option_list.append({str(i): </span><span class="s2">&quot;Up&quot;</span><span class="s0">})</span>
+                            <span class="s0">options.update({i: protivnicki_diskovi_za_obrtanje_up})</span>
+                            <span class="s3">break</span>
+                        <span class="s3">else</span><span class="s0">:</span>
+                            <span class="s0">found = </span><span class="s3">False</span>
+                            <span class="s3">for </span><span class="s0">option </span><span class="s3">in </span><span class="s0">options.items():</span>
+                                <span class="s3">for </span><span class="s0">coordinate </span><span class="s3">in </span><span class="s0">option[</span><span class="s1">1</span><span class="s0">].keys():</span>
+                                    <span class="s3">if </span><span class="s0">coordinate == y:</span>
+                                        <span class="s0">found = </span><span class="s3">True</span>
+                                        <span class="s0">options[option[</span><span class="s1">0</span><span class="s0">]].update(protivnicki_diskovi_za_obrtanje_up)</span>
+                                        <span class="s3">break</span>
+                                <span class="s3">if </span><span class="s0">found:</span>
+                                    <span class="s3">break</span>
+                            <span class="s3">break</span>
+                    <span class="s3">else</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                <span class="s0">protivnicki_diskovi_za_obrtanje_up = {}</span>
+                <span class="s0">disc_counter_white = </span><span class="s1">0</span>
+                <span class="s3">while </span><span class="s0">(x[</span><span class="s1">1</span><span class="s0">] - disc_counter_white) &gt; </span><span class="s1">0</span><span class="s0">:</span>
+                    <span class="s0">disc_counter_white += </span><span class="s1">1</span>
+                    <span class="s0">y = (x[</span><span class="s1">0</span><span class="s0">]</span><span class="s3">, </span><span class="s0">x[</span><span class="s1">1</span><span class="s0">] - disc_counter_white)</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                        <span class="s0">protivnicki_diskovi_za_obrtanje_left.update({y: </span><span class="s2">&quot;W&quot;</span><span class="s0">})</span>
+                    <span class="s3">elif </span><span class="s0">bool(protivnicki_diskovi_za_obrtanje_left):</span>
+                        <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                            <span class="s0">i += </span><span class="s1">1</span>
+                            <span class="s0">self._tabela[y] = str(i)</span>
+                            <span class="s0">protivnicki_diskovi_za_obrtanje_left.update({y: </span><span class="s2">&quot;W&quot;</span><span class="s0">})</span>
+                            <span class="s0">option_list.append({str(i): </span><span class="s2">&quot;Left&quot;</span><span class="s0">})</span>
+                            <span class="s0">options.update({i: protivnicki_diskovi_za_obrtanje_left})</span>
+                            <span class="s3">break</span>
+                        <span class="s3">else</span><span class="s0">:</span>
+                            <span class="s0">found = </span><span class="s3">False</span>
+                            <span class="s3">for </span><span class="s0">option </span><span class="s3">in </span><span class="s0">options.items():</span>
+                                <span class="s3">for </span><span class="s0">coordinate </span><span class="s3">in </span><span class="s0">option[</span><span class="s1">1</span><span class="s0">].keys():</span>
+                                    <span class="s3">if </span><span class="s0">coordinate == y:</span>
+                                        <span class="s0">found = </span><span class="s3">True</span>
+                                        <span class="s0">options[option[</span><span class="s1">0</span><span class="s0">]].update(protivnicki_diskovi_za_obrtanje_left)</span>
+                                        <span class="s3">break</span>
+                                <span class="s3">if </span><span class="s0">found:</span>
+                                    <span class="s3">break</span>
+                            <span class="s3">break</span>
+                    <span class="s3">else</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                <span class="s0">protivnicki_diskovi_za_obrtanje_left = {}</span>
+                <span class="s0">disc_counter_white = </span><span class="s1">0</span>
+                <span class="s3">while </span><span class="s0">(x[</span><span class="s1">0</span><span class="s0">] + disc_counter_white) &lt; </span><span class="s1">7</span><span class="s0">:</span>
+                    <span class="s0">disc_counter_white += </span><span class="s1">1</span>
+                    <span class="s0">y = (x[</span><span class="s1">0</span><span class="s0">] + disc_counter_white</span><span class="s3">, </span><span class="s0">x[</span><span class="s1">1</span><span class="s0">])</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                        <span class="s0">protivnicki_diskovi_za_obrtanje_down.update({y: </span><span class="s2">&quot;W&quot;</span><span class="s0">})</span>
+                    <span class="s3">elif </span><span class="s0">bool(protivnicki_diskovi_za_obrtanje_down):</span>
+                        <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                            <span class="s0">i += </span><span class="s1">1</span>
+                            <span class="s0">self._tabela[y] = str(i)</span>
+                            <span class="s0">protivnicki_diskovi_za_obrtanje_down.update({y: </span><span class="s2">&quot;W&quot;</span><span class="s0">})</span>
+                            <span class="s0">option_list.append({str(i): </span><span class="s2">&quot;Down&quot;</span><span class="s0">})</span>
+                            <span class="s0">options.update({i: protivnicki_diskovi_za_obrtanje_down})</span>
+                            <span class="s3">break</span>
+                        <span class="s3">else</span><span class="s0">:</span>
+                            <span class="s0">found = </span><span class="s3">False</span>
+                            <span class="s3">for </span><span class="s0">option </span><span class="s3">in </span><span class="s0">options.items():</span>
+                                <span class="s3">for </span><span class="s0">coordinate </span><span class="s3">in </span><span class="s0">option[</span><span class="s1">1</span><span class="s0">].keys():</span>
+                                    <span class="s3">if </span><span class="s0">coordinate == y:</span>
+                                        <span class="s0">found = </span><span class="s3">True</span>
+                                        <span class="s0">options[option[</span><span class="s1">0</span><span class="s0">]].update(protivnicki_diskovi_za_obrtanje_down)</span>
+                                        <span class="s3">break</span>
+                                <span class="s3">if </span><span class="s0">found:</span>
+                                    <span class="s3">break</span>
+                            <span class="s3">break</span>
+                    <span class="s3">else</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                <span class="s0">protivnicki_diskovi_za_obrtanje_down = {}</span>
+                <span class="s0">disc_counter_white = </span><span class="s1">0</span>
+                <span class="s3">while </span><span class="s0">(x[</span><span class="s1">1</span><span class="s0">] + disc_counter_white) &lt; </span><span class="s1">7</span><span class="s0">:</span>
+                    <span class="s0">disc_counter_white += </span><span class="s1">1</span>
+                    <span class="s0">y = (x[</span><span class="s1">0</span><span class="s0">]</span><span class="s3">, </span><span class="s0">x[</span><span class="s1">1</span><span class="s0">] + disc_counter_white)</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                        <span class="s0">protivnicki_diskovi_za_obrtanje_right.update({y: </span><span class="s2">&quot;W&quot;</span><span class="s0">})</span>
+                    <span class="s3">elif </span><span class="s0">bool(protivnicki_diskovi_za_obrtanje_right):</span>
+                        <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                            <span class="s0">i += </span><span class="s1">1</span>
+                            <span class="s0">self._tabela[y] = str(i)</span>
+                            <span class="s0">protivnicki_diskovi_za_obrtanje_right.update({y: </span><span class="s2">&quot;W&quot;</span><span class="s0">})</span>
+                            <span class="s0">option_list.append({str(i): </span><span class="s2">&quot;Right&quot;</span><span class="s0">})</span>
+                            <span class="s0">options.update({i: protivnicki_diskovi_za_obrtanje_right})</span>
+                            <span class="s3">break</span>
+                        <span class="s3">else</span><span class="s0">:</span>
+                            <span class="s0">found = </span><span class="s3">False</span>
+                            <span class="s3">for </span><span class="s0">option </span><span class="s3">in </span><span class="s0">options.items():</span>
+                                <span class="s3">for </span><span class="s0">coordinate </span><span class="s3">in </span><span class="s0">option[</span><span class="s1">1</span><span class="s0">].keys():</span>
+                                    <span class="s3">if </span><span class="s0">coordinate == y:</span>
+                                        <span class="s0">found = </span><span class="s3">True</span>
+                                        <span class="s0">options[option[</span><span class="s1">0</span><span class="s0">]].update(protivnicki_diskovi_za_obrtanje_right)</span>
+                                        <span class="s3">break</span>
+                                <span class="s3">if </span><span class="s0">found:</span>
+                                    <span class="s3">break</span>
+                            <span class="s3">break</span>
+                    <span class="s3">else</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                <span class="s0">protivnicki_diskovi_za_obrtanje_right = {}</span>
+                <span class="s0">disc_counter_white = </span><span class="s1">0</span>
+                <span class="s3">while </span><span class="s0">(x[</span><span class="s1">0</span><span class="s0">] - disc_counter_white) &gt; </span><span class="s1">0 </span><span class="s3">and </span><span class="s0">(x[</span><span class="s1">1</span><span class="s0">] - disc_counter_white) &gt; </span><span class="s1">0</span><span class="s0">:</span>
+                    <span class="s0">disc_counter_white += </span><span class="s1">1</span>
+                    <span class="s0">y = (x[</span><span class="s1">0</span><span class="s0">] - disc_counter_white</span><span class="s3">, </span><span class="s0">x[</span><span class="s1">1</span><span class="s0">] - disc_counter_white)</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                        <span class="s0">protivnicki_diskovi_za_obrtanje_up_left.update({y: </span><span class="s2">&quot;W&quot;</span><span class="s0">})</span>
+                    <span class="s3">elif </span><span class="s0">bool(protivnicki_diskovi_za_obrtanje_up_left):</span>
+                        <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                            <span class="s0">i += </span><span class="s1">1</span>
+                            <span class="s0">self._tabela[y] = str(i)</span>
+                            <span class="s0">protivnicki_diskovi_za_obrtanje_up_left.update({y: </span><span class="s2">&quot;W&quot;</span><span class="s0">})</span>
+                            <span class="s0">option_list.append({str(i): </span><span class="s2">&quot;Up-Left&quot;</span><span class="s0">})</span>
+                            <span class="s0">options.update({i: protivnicki_diskovi_za_obrtanje_up_left})</span>
+                            <span class="s3">break</span>
+                        <span class="s3">else</span><span class="s0">:</span>
+                            <span class="s0">found = </span><span class="s3">False</span>
+                            <span class="s3">for </span><span class="s0">option </span><span class="s3">in </span><span class="s0">options.items():</span>
+                                <span class="s3">for </span><span class="s0">coordinate </span><span class="s3">in </span><span class="s0">option[</span><span class="s1">1</span><span class="s0">].keys():</span>
+                                    <span class="s3">if </span><span class="s0">coordinate == y:</span>
+                                        <span class="s0">found = </span><span class="s3">True</span>
+                                        <span class="s0">options[option[</span><span class="s1">0</span><span class="s0">]].update(protivnicki_diskovi_za_obrtanje_up_left)</span>
+                                        <span class="s3">break</span>
+                                <span class="s3">if </span><span class="s0">found:</span>
+                                    <span class="s3">break</span>
+                            <span class="s3">break</span>
+                    <span class="s3">else</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                <span class="s0">protivnicki_diskovi_za_obrtanje_up_left = {}</span>
+                <span class="s0">disc_counter_white = </span><span class="s1">0</span>
+                <span class="s3">while </span><span class="s0">(x[</span><span class="s1">0</span><span class="s0">] + disc_counter_white) &lt; </span><span class="s1">7 </span><span class="s3">and </span><span class="s0">(x[</span><span class="s1">1</span><span class="s0">] + disc_counter_white) &lt; </span><span class="s1">7</span><span class="s0">:</span>
+                    <span class="s0">disc_counter_white += </span><span class="s1">1</span>
+                    <span class="s0">y = (x[</span><span class="s1">0</span><span class="s0">] + disc_counter_white</span><span class="s3">, </span><span class="s0">x[</span><span class="s1">1</span><span class="s0">] + disc_counter_white)</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                        <span class="s0">protivnicki_diskovi_za_obrtanje_down_right.update({y: </span><span class="s2">&quot;W&quot;</span><span class="s0">})</span>
+                    <span class="s3">elif </span><span class="s0">bool(protivnicki_diskovi_za_obrtanje_down_right):</span>
+                        <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                            <span class="s0">i += </span><span class="s1">1</span>
+                            <span class="s0">self._tabela[y] = str(i)</span>
+                            <span class="s0">protivnicki_diskovi_za_obrtanje_down_right.update({y: </span><span class="s2">&quot;W&quot;</span><span class="s0">})</span>
+                            <span class="s0">option_list.append({str(i): </span><span class="s2">&quot;Down-right&quot;</span><span class="s0">})</span>
+                            <span class="s0">options.update({i: protivnicki_diskovi_za_obrtanje_down_right})</span>
+                            <span class="s3">break</span>
+                        <span class="s3">else</span><span class="s0">:</span>
+                            <span class="s0">found = </span><span class="s3">False</span>
+                            <span class="s3">for </span><span class="s0">option </span><span class="s3">in </span><span class="s0">options.items():</span>
+                                <span class="s3">for </span><span class="s0">coordinate </span><span class="s3">in </span><span class="s0">option[</span><span class="s1">1</span><span class="s0">].keys():</span>
+                                    <span class="s3">if </span><span class="s0">coordinate == y:</span>
+                                        <span class="s0">found = </span><span class="s3">True</span>
+                                        <span class="s0">options[option[</span><span class="s1">0</span><span class="s0">]].update(protivnicki_diskovi_za_obrtanje_down_right)</span>
+                                        <span class="s3">break</span>
+                                <span class="s3">if </span><span class="s0">found:</span>
+                                    <span class="s3">break</span>
+                            <span class="s3">break</span>
+                    <span class="s3">else</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                <span class="s0">protivnicki_diskovi_za_obrtanje_down_right = {}</span>
+                <span class="s0">disc_counter_white = </span><span class="s1">0</span>
+                <span class="s3">while </span><span class="s0">(x[</span><span class="s1">0</span><span class="s0">] - disc_counter_white) &gt; </span><span class="s1">0 </span><span class="s3">and </span><span class="s0">(x[</span><span class="s1">1</span><span class="s0">] + disc_counter_white) &lt; </span><span class="s1">7</span><span class="s0">:</span>
+                    <span class="s0">disc_counter_white += </span><span class="s1">1</span>
+                    <span class="s0">y = (x[</span><span class="s1">0</span><span class="s0">] - disc_counter_white</span><span class="s3">, </span><span class="s0">x[</span><span class="s1">1</span><span class="s0">] + disc_counter_white)</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                        <span class="s0">protivnicki_diskovi_za_obrtanje_up_right.update({y: </span><span class="s2">&quot;W&quot;</span><span class="s0">})</span>
+                    <span class="s3">elif </span><span class="s0">bool(protivnicki_diskovi_za_obrtanje_up_right):</span>
+                        <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                            <span class="s0">i += </span><span class="s1">1</span>
+                            <span class="s0">self._tabela[y] = str(i)</span>
+                            <span class="s0">protivnicki_diskovi_za_obrtanje_up_right.update({y: </span><span class="s2">&quot;W&quot;</span><span class="s0">})</span>
+                            <span class="s0">option_list.append({str(i): </span><span class="s2">&quot;Up-right&quot;</span><span class="s0">})</span>
+                            <span class="s0">options.update({i: protivnicki_diskovi_za_obrtanje_up_right})</span>
+                            <span class="s3">break</span>
+                        <span class="s3">else</span><span class="s0">:</span>
+                            <span class="s0">found = </span><span class="s3">False</span>
+                            <span class="s3">for </span><span class="s0">option </span><span class="s3">in </span><span class="s0">options.items():</span>
+                                <span class="s3">for </span><span class="s0">coordinate </span><span class="s3">in </span><span class="s0">option[</span><span class="s1">1</span><span class="s0">].keys():</span>
+                                    <span class="s3">if </span><span class="s0">coordinate == y:</span>
+                                        <span class="s0">found = </span><span class="s3">True</span>
+                                        <span class="s0">options[option[</span><span class="s1">0</span><span class="s0">]].update(protivnicki_diskovi_za_obrtanje_up_right)</span>
+                                        <span class="s3">break</span>
+                                <span class="s3">if </span><span class="s0">found:</span>
+                                    <span class="s3">break</span>
+                            <span class="s3">break</span>
+                    <span class="s3">else</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                <span class="s0">protivnicki_diskovi_za_obrtanje_up_right = {}</span>
+                <span class="s0">disc_counter_white = </span><span class="s1">0</span>
+                <span class="s3">while </span><span class="s0">(x[</span><span class="s1">0</span><span class="s0">] + disc_counter_white) &lt; </span><span class="s1">7 </span><span class="s3">and </span><span class="s0">(x[</span><span class="s1">1</span><span class="s0">] - disc_counter_white) &gt; </span><span class="s1">0</span><span class="s0">:</span>
+                    <span class="s0">disc_counter_white += </span><span class="s1">1</span>
+                    <span class="s0">y = (x[</span><span class="s1">0</span><span class="s0">] + disc_counter_white</span><span class="s3">, </span><span class="s0">x[</span><span class="s1">1</span><span class="s0">] - disc_counter_white)</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;W&quot;</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                    <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;B&quot;</span><span class="s0">:</span>
+                        <span class="s0">protivnicki_diskovi_za_obrtanje_down_left.update({y: </span><span class="s2">&quot;W&quot;</span><span class="s0">})</span>
+                    <span class="s3">elif </span><span class="s0">bool(protivnicki_diskovi_za_obrtanje_down_left):</span>
+                        <span class="s3">if </span><span class="s0">self._tabela[y] == </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                            <span class="s0">i += </span><span class="s1">1</span>
+                            <span class="s0">self._tabela[y] = str(i)</span>
+                            <span class="s0">protivnicki_diskovi_za_obrtanje_down_left.update({y: </span><span class="s2">&quot;W&quot;</span><span class="s0">})</span>
+                            <span class="s0">option_list.append({str(i): </span><span class="s2">&quot;Down-left&quot;</span><span class="s0">})</span>
+                            <span class="s0">options.update({i: protivnicki_diskovi_za_obrtanje_down_left})</span>
+                            <span class="s3">break</span>
+                        <span class="s3">else</span><span class="s0">:</span>
+                            <span class="s0">found = </span><span class="s3">False</span>
+                            <span class="s3">for </span><span class="s0">option </span><span class="s3">in </span><span class="s0">options.items():</span>
+                                <span class="s3">for </span><span class="s0">coordinate </span><span class="s3">in </span><span class="s0">option[</span><span class="s1">1</span><span class="s0">].keys():</span>
+                                    <span class="s3">if </span><span class="s0">coordinate == y:</span>
+                                        <span class="s0">found = </span><span class="s3">True</span>
+                                        <span class="s0">options[option[</span><span class="s1">0</span><span class="s0">]].update(protivnicki_diskovi_za_obrtanje_down_left)</span>
+                                        <span class="s3">break</span>
+                                <span class="s3">if </span><span class="s0">found:</span>
+                                    <span class="s3">break</span>
+                            <span class="s3">break</span>
+                    <span class="s3">else</span><span class="s0">:</span>
+                        <span class="s3">break</span>
+                <span class="s0">protivnicki_diskovi_za_obrtanje_down_left = {}</span>
+        <span class="s3">return </span><span class="s0">[option_list</span><span class="s3">, </span><span class="s0">options]</span>
+
+    <span class="s3">def </span><span class="s0">make_a_move_AI(self</span><span class="s3">, </span><span class="s0">options</span><span class="s3">, </span><span class="s0">option):</span>
+        <span class="s0">self._tabela = self.update_table(options[option])</span>
+        <span class="s3">for </span><span class="s0">x </span><span class="s3">in </span><span class="s0">self._tabela.keys():</span>
+            <span class="s3">if </span><span class="s0">self._tabela[x][</span><span class="s1">0</span><span class="s0">] != </span><span class="s2">&quot;W&quot; </span><span class="s3">and </span><span class="s0">self._tabela[x][</span><span class="s1">0</span><span class="s0">] != </span><span class="s2">&quot;B&quot; </span><span class="s3">and </span><span class="s0">self._tabela[x][</span><span class="s1">0</span><span class="s0">] != </span><span class="s2">&quot;O&quot;</span><span class="s0">:</span>
+                <span class="s0">self._tabela[x] = </span><span class="s2">&quot;O&quot;</span>
+        <span class="s3">return </span><span class="s0">self._tabela</span>
+</pre>
+</body>
+</html>

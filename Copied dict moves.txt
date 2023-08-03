@@ -1,0 +1,525 @@
+    def moves(self, tabela_diskovi):
+        #promeniti svuda gde je self tabela u copied dict da bi se menjalo samo to kad se traze potezi a ne i prava tabela, takodje i u ai moves
+        copied_dict = copy.deepcopy(self._tabela)
+        copied_dict = self.update_table(tabela_diskovi)
+        protivnicki_diskovi_za_obrtanje_up = {}
+        protivnicki_diskovi_za_obrtanje_left = {}
+        protivnicki_diskovi_za_obrtanje_down = {}
+        protivnicki_diskovi_za_obrtanje_right = {}
+        protivnicki_diskovi_za_obrtanje_up_left = {}
+        protivnicki_diskovi_za_obrtanje_down_right = {}
+        protivnicki_diskovi_za_obrtanje_up_right = {}
+        protivnicki_diskovi_za_obrtanje_down_left = {}
+        # print("Options:")
+        option_list = []
+        options = {}
+        i = 0
+        for x in copied_dict.keys():
+            if copied_dict[x][0] == "B":
+                disc_counter_black = 0
+                while (x[0] - disc_counter_black) > 0:
+                    disc_counter_black += 1
+                    y = (x[0] - disc_counter_black, x[1])
+                    if copied_dict[y] == "B":
+                        break
+                    if copied_dict[y] == "W":
+                        protivnicki_diskovi_za_obrtanje_up.update({y: "B"})
+                    elif bool(protivnicki_diskovi_za_obrtanje_up):
+                        if copied_dict[y] == "O":
+                            i += 1
+                            copied_dict[y] = str(i)
+                            protivnicki_diskovi_za_obrtanje_up.update({y: "B"})
+                            # print(str(i) + " Up")
+                            option_list.append({str(i): "Up"})
+                            options.update({i: protivnicki_diskovi_za_obrtanje_up})
+                            break  # self._tabela[y] != "O"
+                        else:
+                            found = False
+                            for option in options.items():
+                                for coordinate in option[1].keys():
+                                    if coordinate == y:
+                                        found = True
+                                        options[option[0]].update(protivnicki_diskovi_za_obrtanje_up)
+                                        break
+                                if found:
+                                    break
+                            break
+                    else:
+                        break
+                protivnicki_diskovi_za_obrtanje_up = {}
+                disc_counter_black = 0
+                while (x[1] - disc_counter_black) > 0:
+                    disc_counter_black += 1
+                    y = (x[0], x[1] - disc_counter_black)
+                    if copied_dict[y] == "B":
+                        break
+                    if copied_dict[y] == "W":
+                        protivnicki_diskovi_za_obrtanje_left.update({y: "B"})
+                    elif bool(protivnicki_diskovi_za_obrtanje_left):
+                        if copied_dict[y] == "O":
+                            i += 1
+                            copied_dict[y] = str(i)
+                            protivnicki_diskovi_za_obrtanje_left.update({y: "B"})
+                            # print(str(i) + " Left")
+                            option_list.append({str(i): "Left"})
+                            options.update({i: protivnicki_diskovi_za_obrtanje_left})
+                            break  # self._tabela[y] != "O"
+                        else:
+                            found = False
+                            for option in options.items():
+                                for coordinate in option[1].keys():
+                                    if coordinate == y:
+                                        found = True
+                                        options[option[0]].update(protivnicki_diskovi_za_obrtanje_left)
+                                        break
+                                if found:
+                                    break
+                            break
+                    else:
+                        break
+                protivnicki_diskovi_za_obrtanje_left = {}
+                disc_counter_black = 0
+                while (x[0] + disc_counter_black) < 7:
+                    disc_counter_black += 1
+                    y = (x[0] + disc_counter_black, x[1])
+                    if copied_dict[y] == "B":
+                        break
+                    if copied_dict[y] == "W":
+                        protivnicki_diskovi_za_obrtanje_down.update({y: "B"})
+                    elif bool(protivnicki_diskovi_za_obrtanje_down):
+                        if copied_dict[y] == "O":
+                            i += 1
+                            copied_dict[y] = str(i)
+                            protivnicki_diskovi_za_obrtanje_down.update({y: "B"})
+                            # print(str(i) + " Down")
+                            option_list.append({str(i): "Down"})
+                            options.update({i: protivnicki_diskovi_za_obrtanje_down})
+                            break  # self._tabela[y] != "O"
+                        else:
+                            found = False
+                            for option in options.items():
+                                for coordinate in option[1].keys():
+                                    if coordinate == y:
+                                        found = True
+                                        options[option[0]].update(protivnicki_diskovi_za_obrtanje_down)
+                                        break
+                                if found:
+                                    break
+                            break
+                    else:
+                        break
+                protivnicki_diskovi_za_obrtanje_down = {}
+                disc_counter_black = 0
+                while (x[1] + disc_counter_black) < 7:
+                    disc_counter_black += 1
+                    y = (x[0], x[1] + disc_counter_black)
+                    if copied_dict[y] == "B":
+                        break
+                    if copied_dict[y] == "W":
+                        protivnicki_diskovi_za_obrtanje_right.update({y: "B"})
+                    elif bool(protivnicki_diskovi_za_obrtanje_right):
+                        if copied_dict[y] == "O":
+                            i += 1
+                            copied_dict[y] = str(i)
+                            protivnicki_diskovi_za_obrtanje_right.update({y: "B"})
+                            # print(str(i) + " Right")
+                            option_list.append({str(i): "Right"})
+                            options.update({i: protivnicki_diskovi_za_obrtanje_right})
+                            break  # self._tabela[y] != "O"
+                        else:
+                            found = False
+                            for option in options.items():
+                                for coordinate in option[1].keys():
+                                    if coordinate == y:
+                                        found = True
+                                        options[option[0]].update(protivnicki_diskovi_za_obrtanje_right)
+                                        break
+                                if found:
+                                    break
+                            break
+                    else:
+                        break
+                protivnicki_diskovi_za_obrtanje_right = {}
+                disc_counter_black = 0
+                while (x[0] - disc_counter_black) > 0 and (x[1] - disc_counter_black) > 0:
+                    disc_counter_black += 1
+                    y = (x[0] - disc_counter_black, x[1] - disc_counter_black)
+                    if copied_dict[y] == "B":
+                        break
+                    if copied_dict[y] == "W":
+                        protivnicki_diskovi_za_obrtanje_up_left.update({y: "B"})
+                    elif bool(protivnicki_diskovi_za_obrtanje_up_left):
+                        if copied_dict[y] == "O":
+                            i += 1
+                            copied_dict[y] = str(i)
+                            protivnicki_diskovi_za_obrtanje_up_left.update({y: "B"})
+                            # print(str(i) + " Up-Left")
+                            option_list.append({str(i): "Up-Left"})
+                            options.update({i: protivnicki_diskovi_za_obrtanje_up_left})
+                            break  # self._tabela[y] != "O"
+                        else:
+                            found = False
+                            for option in options.items():
+                                for coordinate in option[1].keys():
+                                    if coordinate == y:
+                                        found = True
+                                        options[option[0]].update(protivnicki_diskovi_za_obrtanje_up_left)
+                                        break
+                                if found:
+                                    break
+                            break
+                    else:
+                        break
+                protivnicki_diskovi_za_obrtanje_up_left = {}
+                disc_counter_black = 0
+                while (x[0] + disc_counter_black) < 7 and (x[1] + disc_counter_black) < 7:
+                    disc_counter_black += 1
+                    y = (x[0] + disc_counter_black, x[1] + disc_counter_black)
+                    if copied_dict[y] == "B":
+                        break
+                    if copied_dict[y] == "W":
+                        protivnicki_diskovi_za_obrtanje_down_right.update({y: "B"})
+                    elif bool(protivnicki_diskovi_za_obrtanje_down_right):
+                        if copied_dict[y] == "O":
+                            i += 1
+                            copied_dict[y] = str(i)
+                            protivnicki_diskovi_za_obrtanje_down_right.update({y: "B"})
+                            # print(str(i) + " Down-right")
+                            option_list.append({str(i): "Down-right"})
+                            options.update({i: protivnicki_diskovi_za_obrtanje_down_right})
+                            break  # self._tabela[y] != "O"
+                        else:
+                            found = False
+                            for option in options.items():
+                                for coordinate in option[1].keys():
+                                    if coordinate == y:
+                                        found = True
+                                        options[option[0]].update(protivnicki_diskovi_za_obrtanje_down_right)
+                                        break
+                                if found:
+                                    break
+                            break
+                    else:
+                        break
+                protivnicki_diskovi_za_obrtanje_down_right = {}
+                disc_counter_black = 0
+                while (x[0] - disc_counter_black) > 0 and (x[1] + disc_counter_black) < 7:
+                    disc_counter_black += 1
+                    y = (x[0] - disc_counter_black, x[1] + disc_counter_black)
+                    if copied_dict[y] == "B":
+                        break
+                    if copied_dict[y] == "W":
+                        protivnicki_diskovi_za_obrtanje_up_right.update({y: "B"})
+                    elif bool(protivnicki_diskovi_za_obrtanje_up_right):
+                        if copied_dict[y] == "O":
+                            i += 1
+                            copied_dict[y] = str(i)
+                            protivnicki_diskovi_za_obrtanje_up_right.update({y: "B"})
+                            # print(str(i) + " Up-right")
+                            option_list.append({str(i): "Up-right"})
+                            options.update({i: protivnicki_diskovi_za_obrtanje_up_right})
+                            break  # self._tabela[y] != "O"
+                        else:
+                            found = False
+                            for option in options.items():
+                                for coordinate in option[1].keys():
+                                    if coordinate == y:
+                                        found = True
+                                        options[option[0]].update(protivnicki_diskovi_za_obrtanje_up_right)
+                                        break
+                                if found:
+                                    break
+                            break
+                    else:
+                        break
+                protivnicki_diskovi_za_obrtanje_up_right = {}
+                disc_counter_black = 0
+                while (x[0] + disc_counter_black) < 7 and (x[1] - disc_counter_black) > 0:
+                    disc_counter_black += 1
+                    y = (x[0] + disc_counter_black, x[1] - disc_counter_black)
+                    if copied_dict[y] == "B":
+                        break
+                    if copied_dict[y] == "W":
+                        protivnicki_diskovi_za_obrtanje_down_left.update({y: "B"})
+                    elif bool(protivnicki_diskovi_za_obrtanje_down_left):
+                        if copied_dict[y] == "O":
+                            i += 1
+                            copied_dict[y] = str(i)
+                            protivnicki_diskovi_za_obrtanje_down_left.update({y: "B"})
+                            # print(str(i) + " Down-left")
+                            option_list.append({str(i): "Down-left"})
+                            options.update({i: protivnicki_diskovi_za_obrtanje_down_left})
+                            break  # self._tabela[y] != "O"
+                        else:
+                            found = False
+                            for option in options.items():
+                                for coordinate in option[1].keys():
+                                    if coordinate == y:
+                                        found = True
+                                        options[option[0]].update(protivnicki_diskovi_za_obrtanje_down_left)
+                                        break
+                                if found:
+                                    break
+                            break
+                    else:
+                        break
+                protivnicki_diskovi_za_obrtanje_down_left = {}
+        return [option_list, options, copied_dict]
+
+def AI_moves(self, tabela_diskovi):
+copied_dict = copy.deepcopy(self._tabela)
+        copied_dict = self.update_copy(tabela_diskovi)
+        protivnicki_diskovi_za_obrtanje_up = {}
+        protivnicki_diskovi_za_obrtanje_left = {}
+        protivnicki_diskovi_za_obrtanje_down = {}
+        protivnicki_diskovi_za_obrtanje_right = {}
+        protivnicki_diskovi_za_obrtanje_up_left = {}
+        protivnicki_diskovi_za_obrtanje_down_right = {}
+        protivnicki_diskovi_za_obrtanje_up_right = {}
+        protivnicki_diskovi_za_obrtanje_down_left = {}
+        # print("Options:")
+        options = {}
+        i = 0
+        for x in copied_dict.keys():
+            if copied_dict[x][0] == "W":
+                disc_counter_white = 0
+                while (x[0] - disc_counter_white) > 0:
+                    disc_counter_white += 1
+                    y = (x[0] - disc_counter_white, x[1])
+                    if copied_dict[y] == "W":
+                        break
+                    if copied_dict[y] == "B":
+                        protivnicki_diskovi_za_obrtanje_up.update({y: "W"})
+                    elif bool(protivnicki_diskovi_za_obrtanje_up):
+                        if copied_dict[y] == "O":
+                            i += 1
+                            copied_dict[y] = str(i)
+                            protivnicki_diskovi_za_obrtanje_up.update({y: "W"})
+                            # print(str(i) + " Up")
+                            options.update({i: protivnicki_diskovi_za_obrtanje_up})
+                            break  # self._tabela[y] != "O"
+                        else:
+                            found = False
+                            for option in options.items():
+                                for coordinate in option[1].keys():
+                                    if coordinate == y:
+                                        found = True
+                                        options[option[0]].update(protivnicki_diskovi_za_obrtanje_up)
+                                        break
+                                if found:
+                                    break
+                            break
+                    else:
+                        break
+                protivnicki_diskovi_za_obrtanje_up = {}
+                disc_counter_white = 0
+                while (x[1] - disc_counter_white) > 0:
+                    disc_counter_white += 1
+                    y = (x[0], x[1] - disc_counter_white)
+                    if copied_dict[y] == "W":
+                        break
+                    if copied_dict[y] == "B":
+                        protivnicki_diskovi_za_obrtanje_left.update({y: "W"})
+                    elif bool(protivnicki_diskovi_za_obrtanje_left):
+                        if copied_dict[y] == "O":
+                            i += 1
+                            copied_dict[y] = str(i)
+                            protivnicki_diskovi_za_obrtanje_left.update({y: "W"})
+                            # print(str(i) + " Left")
+                            options.update({i: protivnicki_diskovi_za_obrtanje_left})
+                            break  # self._tabela[y] != "O"
+                        else:
+                            found = False
+                            for option in options.items():
+                                for coordinate in option[1].keys():
+                                    if coordinate == y:
+                                        found = True
+                                        options[option[0]].update(protivnicki_diskovi_za_obrtanje_left)
+                                        break
+                                if found:
+                                    break
+                            break
+                    else:
+                        break
+                protivnicki_diskovi_za_obrtanje_left = {}
+                disc_counter_white = 0
+                while (x[0] + disc_counter_white) < 7:
+                    disc_counter_white += 1
+                    y = (x[0] + disc_counter_white, x[1])
+                    if copied_dict[y] == "W":
+                        break
+                    if copied_dict[y] == "B":
+                        protivnicki_diskovi_za_obrtanje_down.update({y: "W"})
+                    elif bool(protivnicki_diskovi_za_obrtanje_down):
+                        if copied_dict[y] == "O":
+                            i += 1
+                            copied_dict[y] = str(i)
+                            protivnicki_diskovi_za_obrtanje_down.update({y: "W"})
+                            # print(str(i) + " Down")
+                            options.update({i: protivnicki_diskovi_za_obrtanje_down})
+                            break  # self._tabela[y] != "O"
+                        else:
+                            found = False
+                            for option in options.items():
+                                for coordinate in option[1].keys():
+                                    if coordinate == y:
+                                        found = True
+                                        options[option[0]].update(protivnicki_diskovi_za_obrtanje_down)
+                                        break
+                                if found:
+                                    break
+                            break
+                    else:
+                        break
+                protivnicki_diskovi_za_obrtanje_down = {}
+                disc_counter_white = 0
+                while (x[1] + disc_counter_white) < 7:
+                    disc_counter_white += 1
+                    y = (x[0], x[1] + disc_counter_white)
+                    if copied_dict[y] == "W":
+                        break
+                    if copied_dict[y] == "B":
+                        protivnicki_diskovi_za_obrtanje_right.update({y: "W"})
+                    elif bool(protivnicki_diskovi_za_obrtanje_right):
+                        if copied_dict[y] == "O":
+                            i += 1
+                            copied_dict[y] = str(i)
+                            protivnicki_diskovi_za_obrtanje_right.update({y: "W"})
+                            # print(str(i) + " Right")
+                            options.update({i: protivnicki_diskovi_za_obrtanje_right})
+                            break  # self._tabela[y] != "O"
+                        else:
+                            found = False
+                            for option in options.items():
+                                for coordinate in option[1].keys():
+                                    if coordinate == y:
+                                        found = True
+                                        options[option[0]].update(protivnicki_diskovi_za_obrtanje_right)
+                                        break
+                                if found:
+                                    break
+                            break
+                    else:
+                        break
+                protivnicki_diskovi_za_obrtanje_right = {}
+                disc_counter_white = 0
+                while (x[0] - disc_counter_white) > 0 and (x[1] - disc_counter_white) > 0:
+                    disc_counter_white += 1
+                    y = (x[0] - disc_counter_white, x[1] - disc_counter_white)
+                    if copied_dict[y] == "W":
+                        break
+                    if copied_dict[y] == "B":
+                        protivnicki_diskovi_za_obrtanje_up_left.update({y: "W"})
+                    elif bool(protivnicki_diskovi_za_obrtanje_up_left):
+                        if copied_dict[y] == "O":
+                            i += 1
+                            copied_dict[y] = str(i)
+                            protivnicki_diskovi_za_obrtanje_up_left.update({y: "W"})
+                            # print(str(i) + " Up-Left")
+                            options.update({i: protivnicki_diskovi_za_obrtanje_up_left})
+                            break  # self._tabela[y] != "O"
+                        else:
+                            found = False
+                            for option in options.items():
+                                for coordinate in option[1].keys():
+                                    if coordinate == y:
+                                        found = True
+                                        options[option[0]].update(protivnicki_diskovi_za_obrtanje_up_left)
+                                        break
+                                if found:
+                                    break
+                            break
+                    else:
+                        break
+                protivnicki_diskovi_za_obrtanje_up_left = {}
+                disc_counter_white = 0
+                while (x[0] + disc_counter_white) < 7 and (x[1] + disc_counter_white) < 7:
+                    disc_counter_white += 1
+                    y = (x[0] + disc_counter_white, x[1] + disc_counter_white)
+                    if copied_dict[y] == "W":
+                        break
+                    if copied_dict[y] == "B":
+                        protivnicki_diskovi_za_obrtanje_down_right.update({y: "W"})
+                    elif bool(protivnicki_diskovi_za_obrtanje_down_right):
+                        if copied_dict[y] == "O":
+                            i += 1
+                            copied_dict[y] = str(i)
+                            protivnicki_diskovi_za_obrtanje_down_right.update({y: "W"})
+                            # print(str(i) + " Down-right")
+                            options.update({i: protivnicki_diskovi_za_obrtanje_down_right})
+                            break  # self._tabela[y] != "O"
+                        else:
+                            found = False
+                            for option in options.items():
+                                for coordinate in option[1].keys():
+                                    if coordinate == y:
+                                        found = True
+                                        options[option[0]].update(protivnicki_diskovi_za_obrtanje_down_right)
+                                        break
+                                if found:
+                                    break
+                            break
+                    else:
+                        break
+                protivnicki_diskovi_za_obrtanje_down_right = {}
+                disc_counter_white = 0
+                while (x[0] - disc_counter_white) > 0 and (x[1] + disc_counter_white) < 7:
+                    disc_counter_white += 1
+                    y = (x[0] - disc_counter_white, x[1] + disc_counter_white)
+                    if copied_dict[y] == "W":
+                        break
+                    if copied_dict[y] == "B":
+                        protivnicki_diskovi_za_obrtanje_up_right.update({y: "W"})
+                    elif bool(protivnicki_diskovi_za_obrtanje_up_right):
+                        if copied_dict[y] == "O":
+                            i += 1
+                            copied_dict[y] = str(i)
+                            protivnicki_diskovi_za_obrtanje_up_right.update({y: "W"})
+                            # print(str(i) + " Up-right")
+                            options.update({i: protivnicki_diskovi_za_obrtanje_up_right})
+                            break  # self._tabela[y] != "O"
+                        else:
+                            found = False
+                            for option in options.items():
+                                for coordinate in option[1].keys():
+                                    if coordinate == y:
+                                        found = True
+                                        options[option[0]].update(protivnicki_diskovi_za_obrtanje_up_right)
+                                        break
+                                if found:
+                                    break
+                            break
+                    else:
+                        break
+                protivnicki_diskovi_za_obrtanje_up_right = {}
+                disc_counter_white = 0
+                while (x[0] + disc_counter_white) < 7 and (x[1] - disc_counter_white) > 0:
+                    disc_counter_white += 1
+                    y = (x[0] + disc_counter_white, x[1] - disc_counter_white)
+                    if copied_dict[y] == "W":
+                        break
+                    if copied_dict[y] == "B":
+                        protivnicki_diskovi_za_obrtanje_down_left.update({y: "W"})
+                    elif bool(protivnicki_diskovi_za_obrtanje_down_left):
+                        if copied_dict[y] == "O":
+                            i += 1
+                            copied_dict[y] = str(i)
+                            protivnicki_diskovi_za_obrtanje_down_left.update({y: "W"})
+                            # print(str(i) + " Down-left")
+                            options.update({i: protivnicki_diskovi_za_obrtanje_down_left})
+                            break  # self._tabela[y] != "O"
+                        else:
+                            found = False
+                            for option in options.items():
+                                for coordinate in option[1].keys():
+                                    if coordinate == y:
+                                        found = True
+                                        options[option[0]].update(protivnicki_diskovi_za_obrtanje_down_left)
+                                        break
+                                if found:
+                                    break
+                            break
+                    else:
+                        break
+                protivnicki_diskovi_za_obrtanje_down_left = {}
+        return options

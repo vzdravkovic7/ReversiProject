@@ -1,0 +1,180 @@
+<html>
+<head>
+<title>game.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #6a8759;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+game.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">tabela</span>
+<span class="s0">from </span><span class="s1">heuristika </span><span class="s0">import </span><span class="s1">*</span>
+
+<span class="s1">stanje_tabele = tabela.Tabela(</span><span class="s2">8</span><span class="s0">, </span><span class="s2">8</span><span class="s1">)</span>
+
+
+<span class="s0">class </span><span class="s1">Game(object):</span>
+    <span class="s0">def </span><span class="s1">__init__(self):</span>
+        <span class="s1">self._current_player = </span><span class="s3">&quot;&quot;</span>
+        <span class="s1">self._opponent = </span><span class="s3">&quot;&quot;</span>
+        <span class="s1">self._winner = </span><span class="s3">&quot;&quot;</span>
+        <span class="s1">self.without_option = </span><span class="s2">0</span>
+        <span class="s1">self._game_is_over = </span><span class="s0">False</span>
+        <span class="s1">self.game_start()</span>
+
+    <span class="s0">def </span><span class="s1">game_start(self):</span>
+        <span class="s1">self._current_player = </span><span class="s3">&quot;Black&quot;</span>
+        <span class="s1">self._opponent = </span><span class="s3">&quot;White&quot;</span>
+        <span class="s1">self.passturn(stanje_tabele.create_table_start())</span>
+
+    <span class="s0">def </span><span class="s1">is_game_over(self</span><span class="s0">, </span><span class="s1">tabela_za_prebacivanje):</span>
+        <span class="s1">stanje_tabele.update_table(tabela_za_prebacivanje)</span>
+        <span class="s1">discs = stanje_tabele.count_discs()</span>
+        <span class="s1">black_discs = discs[</span><span class="s2">0</span><span class="s1">]</span>
+        <span class="s1">white_discs = discs[</span><span class="s2">1</span><span class="s1">]</span>
+        <span class="s0">if </span><span class="s1">black_discs == </span><span class="s2">0 </span><span class="s0">or </span><span class="s1">white_discs == </span><span class="s2">0 </span><span class="s0">or </span><span class="s1">(black_discs + white_discs) == </span><span class="s2">64 </span><span class="s0">or </span><span class="s1">self.without_option == </span><span class="s2">2</span><span class="s1">:</span>
+            <span class="s0">return True</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s0">return False</span>
+
+    <span class="s0">def </span><span class="s1">passturn(self</span><span class="s0">, </span><span class="s1">tabela_za_prebacivanje):</span>
+        <span class="s1">discs = stanje_tabele.count_discs()</span>
+        <span class="s1">black_discs = discs[</span><span class="s2">0</span><span class="s1">]</span>
+        <span class="s1">white_discs = discs[</span><span class="s2">1</span><span class="s1">]</span>
+        <span class="s0">if </span><span class="s1">self.is_game_over(tabela_za_prebacivanje):</span>
+            <span class="s1">end_table = stanje_tabele.update_table(tabela_za_prebacivanje)</span>
+            <span class="s1">print(</span><span class="s3">&quot;The end&quot;</span><span class="s1">)</span>
+            <span class="s1">print(</span><span class="s3">&quot;Final score&quot;</span><span class="s1">)</span>
+            <span class="s1">print(</span><span class="s3">&quot;_______________&quot;</span><span class="s1">)</span>
+            <span class="s1">print(</span><span class="s3">&quot;Player black: &quot; </span><span class="s1">+ str(black_discs))</span>
+            <span class="s1">print(</span><span class="s3">&quot;Player white: &quot; </span><span class="s1">+ str(white_discs))</span>
+            <span class="s1">print(</span><span class="s3">&quot;_______________&quot;</span><span class="s1">)</span>
+            <span class="s1">stanje_tabele.print_state(end_table)</span>
+            <span class="s1">self._game_is_over = </span><span class="s0">True</span>
+            <span class="s1">self.game_over(black_discs</span><span class="s0">, </span><span class="s1">white_discs)</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s1">print(</span><span class="s3">&quot;Current score&quot;</span><span class="s1">)</span>
+            <span class="s1">print(</span><span class="s3">&quot;_______________&quot;</span><span class="s1">)</span>
+            <span class="s1">print(</span><span class="s3">&quot;Player black: &quot; </span><span class="s1">+ str(black_discs))</span>
+            <span class="s1">print(</span><span class="s3">&quot;Player white: &quot; </span><span class="s1">+ str(white_discs))</span>
+            <span class="s1">print(</span><span class="s3">&quot;_______________&quot;</span><span class="s1">)</span>
+
+        <span class="s0">if </span><span class="s1">self._current_player == </span><span class="s3">&quot;Black&quot;</span><span class="s1">:  </span><span class="s4"># Player Black's turn</span>
+            <span class="s1">self._current_player = </span><span class="s3">&quot;White&quot;</span>
+            <span class="s1">self._opponent = </span><span class="s3">&quot;Black&quot;</span>
+            <span class="s1">moves = stanje_tabele.moves(tabela_za_prebacivanje)</span>
+            <span class="s1">options_list = moves[</span><span class="s2">0</span><span class="s1">]</span>
+            <span class="s1">options = moves[</span><span class="s2">1</span><span class="s1">]</span>
+            <span class="s0">if not </span><span class="s1">bool(options):</span>
+                <span class="s1">self.without_option += </span><span class="s2">1</span>
+                <span class="s1">print(</span><span class="s3">&quot;Passing turn&quot;</span><span class="s1">)</span>
+                <span class="s0">if </span><span class="s1">self._game_is_over:</span>
+                    <span class="s1">exit()</span>
+                <span class="s1">self.passturn(tabela_za_prebacivanje)</span>
+            <span class="s0">elif </span><span class="s1">self.without_option == </span><span class="s2">1</span><span class="s1">:</span>
+                <span class="s1">self.without_option -= </span><span class="s2">1</span>
+            <span class="s1">stanje_tabele.print_state(tabela_za_prebacivanje)</span>
+            <span class="s1">print(</span><span class="s3">&quot;Options for player black:&quot;</span><span class="s1">)</span>
+            <span class="s0">for </span><span class="s1">x </span><span class="s0">in </span><span class="s1">options_list:</span>
+                <span class="s0">for </span><span class="s1">key</span><span class="s0">, </span><span class="s1">value </span><span class="s0">in </span><span class="s1">x.items():</span>
+                    <span class="s1">print(key + </span><span class="s3">&quot; &quot; </span><span class="s1">+ value)</span>
+            <span class="s0">while True</span><span class="s1">:</span>
+                <span class="s0">try</span><span class="s1">:</span>
+                    <span class="s1">option = int(input(</span><span class="s3">&quot;Enter option: &quot;</span><span class="s1">))</span>
+                    <span class="s0">if </span><span class="s1">option </span><span class="s0">in </span><span class="s1">options.keys():</span>
+                        <span class="s1">new_table = stanje_tabele.make_a_move_player(options</span><span class="s0">, </span><span class="s1">option)</span>
+                        <span class="s1">self.passturn(new_table)</span>
+                    <span class="s0">else</span><span class="s1">:</span>
+                        <span class="s0">if </span><span class="s1">self.without_option == </span><span class="s2">1</span><span class="s1">:</span>
+                            <span class="s1">print(</span><span class="s3">&quot;Passing turn&quot;</span><span class="s1">)</span>
+                        <span class="s0">if </span><span class="s1">self._game_is_over:</span>
+                            <span class="s1">exit()</span>
+                        <span class="s1">print(</span><span class="s3">&quot;Invalid option&quot;</span><span class="s1">)</span>
+                <span class="s0">except</span><span class="s1">:</span>
+                    <span class="s0">if </span><span class="s1">self.without_option == </span><span class="s2">1</span><span class="s1">:</span>
+                        <span class="s1">print(</span><span class="s3">&quot;Passing turn&quot;</span><span class="s1">)</span>
+                    <span class="s0">if </span><span class="s1">self._game_is_over:</span>
+                        <span class="s1">exit()</span>
+                    <span class="s1">print(</span><span class="s3">&quot;Invalid option&quot;</span><span class="s1">)</span>
+
+        <span class="s0">if </span><span class="s1">self._current_player == </span><span class="s3">&quot;White&quot;</span><span class="s1">:  </span><span class="s4"># Player White's turn</span>
+            <span class="s1">self._current_player = </span><span class="s3">&quot;Black&quot;</span>
+            <span class="s1">self._opponent = </span><span class="s3">&quot;White&quot;</span>
+            <span class="s1">ai_moves = stanje_tabele.AI_moves(tabela_za_prebacivanje)</span>
+            <span class="s1">options_list = ai_moves[</span><span class="s2">0</span><span class="s1">]</span>
+            <span class="s1">options = ai_moves[</span><span class="s2">1</span><span class="s1">]</span>
+            <span class="s0">if not </span><span class="s1">bool(options):</span>
+                <span class="s1">self.without_option += </span><span class="s2">1</span>
+                <span class="s1">print(</span><span class="s3">&quot;Passing turn&quot;</span><span class="s1">)</span>
+                <span class="s0">if </span><span class="s1">self._game_is_over:</span>
+                    <span class="s1">exit()</span>
+                <span class="s1">self.passturn(tabela_za_prebacivanje)</span>
+            <span class="s0">elif </span><span class="s1">self.without_option == </span><span class="s2">1</span><span class="s1">:</span>
+                <span class="s1">self.without_option -= </span><span class="s2">1</span>
+            <span class="s1">stanje_tabele.print_state(tabela_za_prebacivanje)</span>
+            <span class="s1">print(</span><span class="s3">&quot;Options for player white:&quot;</span><span class="s1">)</span>
+            <span class="s0">for </span><span class="s1">x </span><span class="s0">in </span><span class="s1">options_list:</span>
+                <span class="s0">for </span><span class="s1">key</span><span class="s0">, </span><span class="s1">value </span><span class="s0">in </span><span class="s1">x.items():</span>
+                    <span class="s1">print(key + </span><span class="s3">&quot; &quot; </span><span class="s1">+ value)</span>
+            <span class="s0">while True</span><span class="s1">:</span>
+                <span class="s0">try</span><span class="s1">:</span>
+                    <span class="s1">option = int(input(</span><span class="s3">&quot;Enter option: &quot;</span><span class="s1">))</span>
+                    <span class="s0">if </span><span class="s1">option </span><span class="s0">in </span><span class="s1">options.keys():</span>
+                        <span class="s1">new_table = stanje_tabele.make_a_move_AI(options</span><span class="s0">, </span><span class="s1">option)</span>
+                        <span class="s1">self.passturn(new_table)</span>
+                    <span class="s0">else</span><span class="s1">:</span>
+                        <span class="s0">if </span><span class="s1">self.without_option == </span><span class="s2">1</span><span class="s1">:</span>
+                            <span class="s1">print(</span><span class="s3">&quot;Passing turn&quot;</span><span class="s1">)</span>
+                        <span class="s0">if </span><span class="s1">self._game_is_over:</span>
+                            <span class="s1">exit()</span>
+                        <span class="s1">print(</span><span class="s3">&quot;Invalid option&quot;</span><span class="s1">)</span>
+                <span class="s0">except</span><span class="s1">:</span>
+                    <span class="s0">if </span><span class="s1">self.without_option == </span><span class="s2">1</span><span class="s1">:</span>
+                        <span class="s1">print(</span><span class="s3">&quot;Passing turn&quot;</span><span class="s1">)</span>
+                    <span class="s0">if </span><span class="s1">self._game_is_over:</span>
+                        <span class="s1">exit()</span>
+                    <span class="s1">print(</span><span class="s3">&quot;Invalid option&quot;</span><span class="s1">)</span>
+
+    <span class="s0">def </span><span class="s1">game_over(self</span><span class="s0">, </span><span class="s1">blacks</span><span class="s0">, </span><span class="s1">whites):</span>
+        <span class="s0">if </span><span class="s1">blacks &gt; whites:</span>
+            <span class="s1">self._winner = </span><span class="s3">&quot;Black&quot;</span>
+            <span class="s1">print(self._winner + </span><span class="s3">&quot; is the winner with &quot; </span><span class="s1">+ str(blacks) + </span><span class="s3">&quot;pts&quot;</span><span class="s1">)</span>
+        <span class="s0">elif </span><span class="s1">whites &gt; blacks:</span>
+            <span class="s1">self._winner = </span><span class="s3">&quot;White&quot;</span>
+            <span class="s1">print(self._winner + </span><span class="s3">&quot; is the winner with &quot; </span><span class="s1">+ str(whites) + </span><span class="s3">&quot;pts&quot;</span><span class="s1">)</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s1">print(</span><span class="s3">&quot;Its a tie! Both players have &quot; </span><span class="s1">+ str(blacks) + </span><span class="s3">&quot;pts&quot;</span><span class="s1">)</span>
+        <span class="s1">exit()</span>
+
+    <span class="s0">def </span><span class="s1">minimax(self</span><span class="s0">, </span><span class="s1">node</span><span class="s0">, </span><span class="s1">depth</span><span class="s0">, </span><span class="s1">alpha</span><span class="s0">, </span><span class="s1">beta</span><span class="s0">, </span><span class="s1">maximizingPlayer):</span>
+        <span class="s0">if </span><span class="s1">depth == </span><span class="s2">0 </span><span class="s0">or </span><span class="s1">self.is_game_over(node):</span>
+            <span class="s0">return </span><span class="s1">dynamic_heuristic_evaluation_function(node)</span>
+        <span class="s0">if </span><span class="s1">maximizingPlayer:</span>
+            <span class="s1">value = float(</span><span class="s3">'-inf'</span><span class="s1">)</span>
+            <span class="s0">for </span><span class="s1">child </span><span class="s0">in </span><span class="s1">node.children:</span>
+                <span class="s1">value = max(value</span><span class="s0">, </span><span class="s1">self.minimax(child</span><span class="s0">, </span><span class="s1">depth - </span><span class="s2">1</span><span class="s0">, </span><span class="s1">alpha</span><span class="s0">, </span><span class="s1">beta</span><span class="s0">, False</span><span class="s1">))</span>
+                <span class="s1">alpha = max(alpha</span><span class="s0">, </span><span class="s1">value)</span>
+                <span class="s0">if </span><span class="s1">value &gt;= beta:</span>
+                    <span class="s0">break  </span><span class="s4"># β cutoff</span>
+            <span class="s0">return </span><span class="s1">value</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s1">value = float(</span><span class="s3">'inf'</span><span class="s1">)</span>
+            <span class="s0">for </span><span class="s1">child </span><span class="s0">in </span><span class="s1">node.children:</span>
+                <span class="s1">value = min(value</span><span class="s0">, </span><span class="s1">self.minimax(child</span><span class="s0">, </span><span class="s1">depth - </span><span class="s2">1</span><span class="s0">, </span><span class="s1">alpha</span><span class="s0">, </span><span class="s1">beta</span><span class="s0">, True</span><span class="s1">))</span>
+                <span class="s1">beta = min(beta</span><span class="s0">, </span><span class="s1">value)</span>
+                <span class="s0">if </span><span class="s1">value &lt;= alpha:</span>
+                    <span class="s0">break  </span><span class="s4"># α cutoff</span>
+            <span class="s0">return </span><span class="s1">value</span>
+
+</pre>
+</body>
+</html>
