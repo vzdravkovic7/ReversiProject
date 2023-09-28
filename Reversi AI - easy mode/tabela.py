@@ -24,6 +24,18 @@ class Tabela(object):
                     self._tabela[(i, j)] = "W"
         return self._tabela
 
+    def get_table_value(self, row, col):
+        return self._tabela[(row, col)]
+
+    def if_is_in_valid_moves(self, moves, row, col):
+        for move in moves.values():
+            for x in move.keys():
+                rowx, colx = x
+                if rowx == row and colx == col:
+                    return True
+
+        return False
+
     def update_table(self, izmena_tabele):
         for x in izmena_tabele.keys():
             for y in self._tabela.keys():
@@ -85,12 +97,12 @@ class Tabela(object):
                     elif bool(protivnicki_diskovi_za_obrtanje_up):
                         if self._tabela[y] == "O":
                             i += 1
-                            self._tabela[y] = str(i)
+                            # self._tabela[y] = str(i)
                             protivnicki_diskovi_za_obrtanje_up.update({y: "B"})
                             option_list.append({str(i): "Up"})
                             options.update({i: protivnicki_diskovi_za_obrtanje_up})
-                            break
-                        else:
+                        #     break
+                        # else:
                             found = False
                             for option in options.items():
                                 for coordinate in option[1].keys():
@@ -115,12 +127,12 @@ class Tabela(object):
                     elif bool(protivnicki_diskovi_za_obrtanje_left):
                         if self._tabela[y] == "O":
                             i += 1
-                            self._tabela[y] = str(i)
+                            # self._tabela[y] = str(i)
                             protivnicki_diskovi_za_obrtanje_left.update({y: "B"})
                             option_list.append({str(i): "Left"})
                             options.update({i: protivnicki_diskovi_za_obrtanje_left})
-                            break
-                        else:
+                        #     break
+                        # else:
                             found = False
                             for option in options.items():
                                 for coordinate in option[1].keys():
@@ -145,12 +157,12 @@ class Tabela(object):
                     elif bool(protivnicki_diskovi_za_obrtanje_down):
                         if self._tabela[y] == "O":
                             i += 1
-                            self._tabela[y] = str(i)
+                            # self._tabela[y] = str(i)
                             protivnicki_diskovi_za_obrtanje_down.update({y: "B"})
                             option_list.append({str(i): "Down"})
                             options.update({i: protivnicki_diskovi_za_obrtanje_down})
-                            break
-                        else:
+                        #     break
+                        # else:
                             found = False
                             for option in options.items():
                                 for coordinate in option[1].keys():
@@ -175,12 +187,12 @@ class Tabela(object):
                     elif bool(protivnicki_diskovi_za_obrtanje_right):
                         if self._tabela[y] == "O":
                             i += 1
-                            self._tabela[y] = str(i)
+                            # self._tabela[y] = str(i)
                             protivnicki_diskovi_za_obrtanje_right.update({y: "B"})
                             option_list.append({str(i): "Right"})
                             options.update({i: protivnicki_diskovi_za_obrtanje_right})
-                            break
-                        else:
+                        #     break
+                        # else:
                             found = False
                             for option in options.items():
                                 for coordinate in option[1].keys():
@@ -205,12 +217,12 @@ class Tabela(object):
                     elif bool(protivnicki_diskovi_za_obrtanje_up_left):
                         if self._tabela[y] == "O":
                             i += 1
-                            self._tabela[y] = str(i)
+                            # self._tabela[y] = str(i)
                             protivnicki_diskovi_za_obrtanje_up_left.update({y: "B"})
                             option_list.append({str(i): "Up-Left"})
                             options.update({i: protivnicki_diskovi_za_obrtanje_up_left})
-                            break
-                        else:
+                        #     break
+                        # else:
                             found = False
                             for option in options.items():
                                 for coordinate in option[1].keys():
@@ -235,12 +247,12 @@ class Tabela(object):
                     elif bool(protivnicki_diskovi_za_obrtanje_down_right):
                         if self._tabela[y] == "O":
                             i += 1
-                            self._tabela[y] = str(i)
+                            # self._tabela[y] = str(i)
                             protivnicki_diskovi_za_obrtanje_down_right.update({y: "B"})
                             option_list.append({str(i): "Down-right"})
                             options.update({i: protivnicki_diskovi_za_obrtanje_down_right})
-                            break
-                        else:
+                        #     break
+                        # else:
                             found = False
                             for option in options.items():
                                 for coordinate in option[1].keys():
@@ -265,12 +277,12 @@ class Tabela(object):
                     elif bool(protivnicki_diskovi_za_obrtanje_up_right):
                         if self._tabela[y] == "O":
                             i += 1
-                            self._tabela[y] = str(i)
+                            # self._tabela[y] = str(i)
                             protivnicki_diskovi_za_obrtanje_up_right.update({y: "B"})
                             option_list.append({str(i): "Up-right"})
                             options.update({i: protivnicki_diskovi_za_obrtanje_up_right})
-                            break
-                        else:
+                        #     break
+                        # else:
                             found = False
                             for option in options.items():
                                 for coordinate in option[1].keys():
@@ -295,12 +307,12 @@ class Tabela(object):
                     elif bool(protivnicki_diskovi_za_obrtanje_down_left):
                         if self._tabela[y] == "O":
                             i += 1
-                            self._tabela[y] = str(i)
+                            # self._tabela[y] = str(i)
                             protivnicki_diskovi_za_obrtanje_down_left.update({y: "B"})
                             option_list.append({str(i): "Down-left"})
                             options.update({i: protivnicki_diskovi_za_obrtanje_down_left})
-                            break
-                        else:
+                        #     break
+                        # else:
                             found = False
                             for option in options.items():
                                 for coordinate in option[1].keys():
@@ -316,30 +328,12 @@ class Tabela(object):
                 protivnicki_diskovi_za_obrtanje_down_left = {}
         return [option_list, options]
 
-    def make_a_move_player(self, current_table):
-        moves = self.moves(current_table)
-        options_list = moves[0]
-        options = moves[1]
-        if not bool(options):
-            return self._tabela
-        self.print_state(self._tabela)
-        print("Options:")
-        for x in options_list:
-            for key, value in x.items():
-                print(key + " " + value)
-        while True:
-            try:
-                option = int(input("Enter option: "))
-                if option in options.keys():
-                    self._tabela = self.update_table(options[option])
-                    for x in self._tabela.keys():
-                        if self._tabela[x][0] != "W" and self._tabela[x][0] != "B" and self._tabela[x][0] != "O":
-                            self._tabela[x] = "O"
-                    return self._tabela
-                else:
-                    print("Invalid option")
-            except:
-                print("Invalid option")
+    def make_a_move_player(self, options, option):
+        self._tabela = self.update_table(options[option])
+        for x in self._tabela.keys():
+            if self._tabela[x][0] != "W" and self._tabela[x][0] != "B" and self._tabela[x][0] != "O":
+                self._tabela[x] = "O"
+        return self._tabela
 
     def AI_moves(self, tabela_diskovi):
         self._tabela = self.update_table(tabela_diskovi)
@@ -366,11 +360,11 @@ class Tabela(object):
                     elif bool(protivnicki_diskovi_za_obrtanje_up):
                         if self._tabela[y] == "O":
                             i += 1
-                            self._tabela[y] = str(i)
+                            # self._tabela[y] = str(i)
                             protivnicki_diskovi_za_obrtanje_up.update({y: "W"})
                             options.update({i: protivnicki_diskovi_za_obrtanje_up})
-                            break
-                        else:
+                        #     break
+                        # else:
                             found = False
                             for option in options.items():
                                 for coordinate in option[1].keys():
@@ -395,11 +389,11 @@ class Tabela(object):
                     elif bool(protivnicki_diskovi_za_obrtanje_left):
                         if self._tabela[y] == "O":
                             i += 1
-                            self._tabela[y] = str(i)
+                            # self._tabela[y] = str(i)
                             protivnicki_diskovi_za_obrtanje_left.update({y: "W"})
                             options.update({i: protivnicki_diskovi_za_obrtanje_left})
-                            break
-                        else:
+                        #     break
+                        # else:
                             found = False
                             for option in options.items():
                                 for coordinate in option[1].keys():
@@ -424,11 +418,11 @@ class Tabela(object):
                     elif bool(protivnicki_diskovi_za_obrtanje_down):
                         if self._tabela[y] == "O":
                             i += 1
-                            self._tabela[y] = str(i)
+                            # self._tabela[y] = str(i)
                             protivnicki_diskovi_za_obrtanje_down.update({y: "W"})
                             options.update({i: protivnicki_diskovi_za_obrtanje_down})
-                            break
-                        else:
+                        #     break
+                        # else:
                             found = False
                             for option in options.items():
                                 for coordinate in option[1].keys():
@@ -453,11 +447,11 @@ class Tabela(object):
                     elif bool(protivnicki_diskovi_za_obrtanje_right):
                         if self._tabela[y] == "O":
                             i += 1
-                            self._tabela[y] = str(i)
+                            # self._tabela[y] = str(i)
                             protivnicki_diskovi_za_obrtanje_right.update({y: "W"})
                             options.update({i: protivnicki_diskovi_za_obrtanje_right})
-                            break
-                        else:
+                        #     break
+                        # else:
                             found = False
                             for option in options.items():
                                 for coordinate in option[1].keys():
@@ -482,11 +476,11 @@ class Tabela(object):
                     elif bool(protivnicki_diskovi_za_obrtanje_up_left):
                         if self._tabela[y] == "O":
                             i += 1
-                            self._tabela[y] = str(i)
+                            # self._tabela[y] = str(i)
                             protivnicki_diskovi_za_obrtanje_up_left.update({y: "W"})
                             options.update({i: protivnicki_diskovi_za_obrtanje_up_left})
-                            break
-                        else:
+                        #     break
+                        # else:
                             found = False
                             for option in options.items():
                                 for coordinate in option[1].keys():
@@ -511,11 +505,11 @@ class Tabela(object):
                     elif bool(protivnicki_diskovi_za_obrtanje_down_right):
                         if self._tabela[y] == "O":
                             i += 1
-                            self._tabela[y] = str(i)
+                            # self._tabela[y] = str(i)
                             protivnicki_diskovi_za_obrtanje_down_right.update({y: "W"})
                             options.update({i: protivnicki_diskovi_za_obrtanje_down_right})
-                            break
-                        else:
+                        #     break
+                        # else:
                             found = False
                             for option in options.items():
                                 for coordinate in option[1].keys():
@@ -540,11 +534,11 @@ class Tabela(object):
                     elif bool(protivnicki_diskovi_za_obrtanje_up_right):
                         if self._tabela[y] == "O":
                             i += 1
-                            self._tabela[y] = str(i)
+                            # self._tabela[y] = str(i)
                             protivnicki_diskovi_za_obrtanje_up_right.update({y: "W"})
                             options.update({i: protivnicki_diskovi_za_obrtanje_up_right})
-                            break
-                        else:
+                        #     break
+                        # else:
                             found = False
                             for option in options.items():
                                 for coordinate in option[1].keys():
@@ -569,11 +563,11 @@ class Tabela(object):
                     elif bool(protivnicki_diskovi_za_obrtanje_down_left):
                         if self._tabela[y] == "O":
                             i += 1
-                            self._tabela[y] = str(i)
+                            # self._tabela[y] = str(i)
                             protivnicki_diskovi_za_obrtanje_down_left.update({y: "W"})
                             options.update({i: protivnicki_diskovi_za_obrtanje_down_left})
-                            break
-                        else:
+                        #     break
+                        # else:
                             found = False
                             for option in options.items():
                                 for coordinate in option[1].keys():
@@ -589,10 +583,10 @@ class Tabela(object):
                 protivnicki_diskovi_za_obrtanje_down_left = {}
         return options
 
-    def make_a_move_AI(self, current_table):
-        options = self.AI_moves(current_table)
-        if not bool(options):
-            return self._tabela
+    def make_a_move_AI(self, options):
+        # options = self.AI_moves(current_table)
+        # if not bool(options):
+        #     return self._tabela
         self.print_state(self._tabela)
         option_list = []
         for x in options.keys():
@@ -603,10 +597,10 @@ class Tabela(object):
             if self._tabela[x][0] != "W" and self._tabela[x][0] != "B" and self._tabela[x][0] != "O":
                 self._tabela[x] = "O"
         return self._tabela
-
-    def lost_options(self, provera_tabele):
-        for x in provera_tabele.items():
-            for y in self._tabela.items():
-                if y != x:
-                    return False
-        return True
+    #
+    # def lost_options(self, provera_tabele):
+    #     for x in provera_tabele.items():
+    #         for y in self._tabela.items():
+    #             if y != x:
+    #                 return False
+    #     return True
