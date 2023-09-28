@@ -133,6 +133,53 @@ class Game(object):
         else:
             return False
 
+    def print_score(self, black_discs, white_discs):
+        print("Current score")
+        print("_______________")
+        self.text2 = self.font2.render(
+            "Current score - Player black: " + str(black_discs) + " Player white: " + str(
+                white_discs), True, WHITE)
+        self.screen.blit(self.text2, self.text2_rect)
+        print("Player black: " + str(black_discs))
+        print("Player white: " + str(white_discs))
+        print("_______________")
+
+    def print_pass_turn(self, black_discs, white_discs):
+        print("Passing turn")
+        self.screen.fill(BLACK)
+        self.text = self.font.render("Passing turn", True, WHITE)
+        self.screen.blit(self.text, self.text_rect)
+        self.text2 = self.font2.render(
+            "Current score - Player black: " + str(black_discs) + " Player white: " + str(
+                white_discs), True, WHITE)
+        self.screen.blit(self.text2, self.text2_rect)
+        pygame.time.delay(1000)
+
+    def print_invalid_option(self, black_discs, white_discs):
+        print("Invalid option")
+        self.screen.fill(BLACK)
+        self.text = self.font.render("Invalid option", True, WHITE)
+        self.screen.blit(self.text, self.text_rect)
+        self.text2 = self.font2.render(
+            "Current score - Player black: " + str(black_discs) + " Player white: " + str(
+                white_discs), True, WHITE)
+        self.screen.blit(self.text2, self.text2_rect)
+
+    def print_final_score(self, black_discs, white_discs, end_table):
+        print("The end")
+        print("Final score")
+        print("_______________")
+        self.text2 = self.font2.render("The end. Final score - Player black: " + str(
+            black_discs) + " Player white: " + str(white_discs), True, WHITE)
+        self.screen.blit(self.text2, self.text2_rect)
+        print("Player black: " + str(black_discs))
+        print("Player white: " + str(white_discs))
+        print("_______________")
+        stanje_tabele.print_state(end_table)
+        pygame.time.delay(1000)
+        self.game_over(black_discs, white_discs)
+        self._game_is_over = True
+
     def passturn(self, tabela_za_prebacivanje):
         print("Welcome!")
         print()
@@ -142,28 +189,9 @@ class Game(object):
         white_discs = discs[1]
         if self.is_game_over(tabela_za_prebacivanje):
             end_table = stanje_tabele.update_table(tabela_za_prebacivanje)
-            print("The end")
-            print("Final score")
-            print("_______________")
-            self.text2 = self.font2.render("The end. Final score - Player black: " + str(
-                black_discs) + " Player white: " + str(white_discs), True, WHITE)
-            self.screen.blit(self.text2, self.text2_rect)
-            print("Player black: " + str(black_discs))
-            print("Player white: " + str(white_discs))
-            print("_______________")
-            stanje_tabele.print_state(end_table)
-            self._game_is_over = True
-            self.game_over(black_discs, white_discs)
+            self.print_final_score(black_discs, white_discs, end_table)
         else:
-            print("Current score")
-            print("_______________")
-            self.text2 = self.font2.render(
-                "Current score - Player black: " + str(black_discs) + " Player white: " + str(
-                    white_discs), True, WHITE)
-            self.screen.blit(self.text2, self.text2_rect)
-            print("Player black: " + str(black_discs))
-            print("Player white: " + str(white_discs))
-            print("_______________")
+            self.print_score(black_discs, white_discs)
         stanje_tabele.print_state(tabela_za_prebacivanje)
 
         while self.running:
@@ -177,15 +205,7 @@ class Game(object):
             options = moves[1]
             if not bool(options):
                 self.without_option += 1
-                print("Passing turn")
-                self.screen.fill(BLACK)
-                self.text = self.font.render("Passing turn", True, WHITE)
-                self.screen.blit(self.text, self.text_rect)
-                self.text2 = self.font2.render(
-                    "Current score - Player black: " + str(black_discs) + " Player white: " + str(
-                        white_discs), True, WHITE)
-                self.screen.blit(self.text2, self.text2_rect)
-                pygame.time.delay(1000)
+                self.print_pass_turn(black_discs, white_discs)
                 # if self._game_is_over:
                 #     exit()
             elif self.without_option == 1:
@@ -198,18 +218,7 @@ class Game(object):
                 black_discs = discs[0]
                 white_discs = discs[1]
                 end_table = stanje_tabele.update_table(tabela_za_prebacivanje)
-                print("The end")
-                print("Final score")
-                print("_______________")
-                self.text2 = self.font2.render("The end. Final score - Player black: " + str(
-                    black_discs) + " Player white: " + str(white_discs), True, WHITE)
-                self.screen.blit(self.text2, self.text2_rect)
-                print("Player black: " + str(black_discs))
-                print("Player white: " + str(white_discs))
-                print("_______________")
-                stanje_tabele.print_state(end_table)
-                self._game_is_over = True
-                self.game_over(black_discs, white_discs)
+                self.print_final_score(black_discs, white_discs, end_table)
                 pygame.time.delay(3000)
 
             for event in pygame.event.get():
@@ -219,9 +228,11 @@ class Game(object):
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     if self._game_is_over:
                         if play_again_rect.collidepoint(event.pos):
+                            self.text_rect = self.text.get_rect(center=(COLUMNS * CELL_SIZE // 2 - 40, 510))
                             self.screen.fill(BLACK)
                             self.text = self.font.render("Player Black's turn", True, WHITE)
                             self.screen.blit(self.text, self.text_rect)
+                            # self.screen.blit(self.text2, self.text2_rect)
                             # Reset the game state
 
                             self._game_is_over = False
@@ -240,8 +251,7 @@ class Game(object):
                         self.text = self.font.render("Player White's turn", True, WHITE)
                         self.screen.blit(self.text, self.text_rect)
                         print("Player White's turn:")
-
-                        if stanje_tabele.if_is_in_valid_moves(self.valid_options, row, col):
+                        if stanje_tabele.if_is_in_valid_moves(self.valid_options, row, col) and stanje_tabele.get_table_value(row, col) != "W" and stanje_tabele.get_table_value(row, col) != "B":
                             option = find_key_by_value(self.valid_options, (row, col))
                             new_table = stanje_tabele.make_a_move_player(self.valid_options, option)
                             stanje_tabele.update_table(new_table)
@@ -253,52 +263,17 @@ class Game(object):
                             white_discs = discs[1]
                             if self.is_game_over(tabela_za_prebacivanje):
                                 end_table = stanje_tabele.update_table(tabela_za_prebacivanje)
-                                print("The end")
-                                print("Final score")
-                                print("_______________")
-                                self.text2 = self.font2.render("The end. Final score - Player black: " + str(
-                                    black_discs) + " Player white: " + str(white_discs), True, WHITE)
-                                self.screen.blit(self.text2, self.text2_rect)
-                                print("Player black: " + str(black_discs))
-                                print("Player white: " + str(white_discs))
-                                print("_______________")
-                                stanje_tabele.print_state(end_table)
-                                self._game_is_over = True
-                                pygame.time.delay(1000)
-                                self.game_over(black_discs, white_discs)
+                                self.print_final_score(black_discs, white_discs, end_table)
                                 # pygame.time.delay(3000)
                             else:
-                                print("Current score")
-                                print("_______________")
-                                self.text2 = self.font2.render(
-                                    "Current score - Player black: " + str(black_discs) + " Player white: " + str(
-                                        white_discs), True, WHITE)
-                                self.screen.blit(self.text2, self.text2_rect)
-                                print("Player black: " + str(black_discs))
-                                print("Player white: " + str(white_discs))
-                                print("_______________")
+                                self.print_score(black_discs, white_discs)
                             stanje_tabele.print_state(new_table)
                         else:
                             if self.without_option == 1:
-                                print("Passing turn")
-                                self.screen.fill(BLACK)
-                                self.text = self.font.render("Passing turn", True, WHITE)
-                                self.screen.blit(self.text, self.text_rect)
-                                self.text2 = self.font2.render(
-                                    "Current score - Player black: " + str(black_discs) + " Player white: " + str(
-                                        white_discs), True, WHITE)
-                                self.screen.blit(self.text2, self.text2_rect)
-                                pygame.time.delay(1000)
+                                self.print_pass_turn(black_discs, white_discs)
                             # if self._game_is_over:
                             #     exit()
-                            print("Invalid option")
-                            self.screen.fill(BLACK)
-                            self.text = self.font.render("Invalid option", True, WHITE)
-                            self.screen.blit(self.text, self.text_rect)
-                            self.text2 = self.font2.render(
-                                "Current score - Player black: " + str(black_discs) + " Player white: " + str(
-                                    white_discs), True, WHITE)
-                            self.screen.blit(self.text2, self.text2_rect)
+                            self.print_invalid_option(black_discs, white_discs)
 
                     elif self._current_player == "White":  # Player White's turn
                         self.screen.fill(BLACK)
@@ -306,7 +281,7 @@ class Game(object):
                         self.screen.blit(self.text, self.text_rect)
                         print("Player Black's turn:")
 
-                        if stanje_tabele.if_is_in_valid_moves(self.valid_options, row, col):
+                        if stanje_tabele.if_is_in_valid_moves(self.valid_options, row, col) and stanje_tabele.get_table_value(row, col) != "W" and stanje_tabele.get_table_value(row, col) != "B":
                             option = find_key_by_value(self.valid_options, (row, col))
                             new_table = stanje_tabele.make_a_move_player(self.valid_options, option)
                             stanje_tabele.update_table(new_table)
@@ -318,52 +293,17 @@ class Game(object):
                             white_discs = discs[1]
                             if self.is_game_over(tabela_za_prebacivanje):
                                 end_table = stanje_tabele.update_table(tabela_za_prebacivanje)
-                                print("The end")
-                                print("Final score")
-                                print("_______________")
-                                self.text2 = self.font2.render("The end. Final score - Player black: " + str(
-                                    black_discs) + " Player white: " + str(white_discs), True, WHITE)
-                                self.screen.blit(self.text2, self.text2_rect)
-                                print("Player black: " + str(black_discs))
-                                print("Player white: " + str(white_discs))
-                                print("_______________")
-                                stanje_tabele.print_state(end_table)
-                                self._game_is_over = True
-                                pygame.time.delay(1000)
-                                self.game_over(black_discs, white_discs)
+                                self.print_final_score(black_discs, white_discs, end_table)
                                 # pygame.time.delay(3000)
                             else:
-                                print("Current score")
-                                print("_______________")
-                                self.text2 = self.font2.render(
-                                    "Current score - Player black: " + str(black_discs) + " Player white: " + str(
-                                        white_discs), True, WHITE)
-                                self.screen.blit(self.text2, self.text2_rect)
-                                print("Player black: " + str(black_discs))
-                                print("Player white: " + str(white_discs))
-                                print("_______________")
+                                self.print_score(black_discs, white_discs)
                             stanje_tabele.print_state(new_table)
                         else:
                             if self.without_option == 1:
-                                print("Passing turn")
-                                self.screen.fill(BLACK)
-                                self.text = self.font.render("Passing turn", True, WHITE)
-                                self.screen.blit(self.text, self.text_rect)
-                                self.text2 = self.font2.render(
-                                    "Current score - Player black: " + str(black_discs) + " Player white: " + str(
-                                        white_discs), True, WHITE)
-                                self.screen.blit(self.text2, self.text2_rect)
-                                pygame.time.delay(1000)
+                                self.print_pass_turn(black_discs, white_discs)
                             # if self._game_is_over:
                             #     exit()
-                            print("Invalid option")
-                            self.screen.fill(BLACK)
-                            self.text = self.font.render("Invalid option", True, WHITE)
-                            self.screen.blit(self.text, self.text_rect)
-                            self.text2 = self.font2.render(
-                                "Current score - Player black: " + str(black_discs) + " Player white: " + str(
-                                    white_discs), True, WHITE)
-                            self.screen.blit(self.text2, self.text2_rect)
+                            self.print_invalid_option(black_discs, white_discs)
 
             if not self._game_is_over:
 
