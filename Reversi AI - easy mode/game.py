@@ -3,6 +3,11 @@ from heuristika import *
 import pygame
 import sys
 
+hand_cursor = pygame.image.load("hand_cursor.png")
+
+cursor_size = (20, 20)  # Set the desired size
+hand_cursor = pygame.transform.scale(hand_cursor, cursor_size)
+
 # Define colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -35,6 +40,17 @@ def get_row_col_from_mouse(pos):
     return row, col
 
 
+def is_mouse_over_valid_move(mouse_pos, valid_moves):
+    for move in valid_moves.values():
+        for x in move.keys():
+            row, col = x
+            if row * CELL_SIZE <= mouse_pos[1] <= (row + 1) * CELL_SIZE and col * CELL_SIZE <= mouse_pos[0] <= (col + 1) * CELL_SIZE:
+                if stanje_tabele.get_table_value(row, col) == "W" or stanje_tabele.get_table_value(row, col) == "B":
+                    return False
+                return True
+    return False
+
+
 class Game(object):
     def __init__(self):
         pygame.init()
@@ -47,7 +63,7 @@ class Game(object):
         self.text2 = self.font2.render(" ", True, WHITE)
         self.text2_rect = self.text2.get_rect(center=(COLUMNS * CELL_SIZE // 2 - 170, 550))
         self.screen.blit(self.text2, self.text2_rect)
-        pygame.display.set_caption("Reversi - Player vs Player")
+        pygame.display.set_caption("Reversi - Player vs AI - easy mode")
         self.clock = pygame.time.Clock()
         self._current_player = ""
         self._opponent = ""
@@ -198,6 +214,14 @@ class Game(object):
         while self.running:
             pygame.display.flip()
             self.clock.tick(30)
+
+            # Get the current mouse position
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+
+            # Calculate the position to draw the custom cursor image
+            cursor_x = mouse_x - hand_cursor.get_width() // 2
+            cursor_y = mouse_y - hand_cursor.get_height() // 2
+
             options = {}
             if self._current_player == "Black":
                 moves = stanje_tabele.moves(tabela_za_prebacivanje)
@@ -230,7 +254,7 @@ class Game(object):
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     if self._game_is_over:
                         if play_again_rect.collidepoint(event.pos):
-                            self.text_rect = self.text.get_rect(center=(COLUMNS * CELL_SIZE // 2 - 40, 510))
+                            self.text_rect = self.text.get_rect(center=(COLUMNS * CELL_SIZE // 2 + 20, 510))
                             self.screen.fill(BLACK)
                             self.text = self.font.render("Player Black's turn", True, WHITE)
                             self.screen.blit(self.text, self.text_rect)
@@ -315,6 +339,14 @@ class Game(object):
             if not self._game_is_over:
 
                 self.update()
+
+                if is_mouse_over_valid_move(pygame.mouse.get_pos(), self.valid_options):
+                    pygame.mouse.set_visible(False)
+                    self.screen.blit(hand_cursor, (cursor_x, cursor_y))
+                    # pygame.mouse.set_cursor(*pygame.cursors.diamond)  # Change to a hand cursor
+                else:
+                    pygame.mouse.set_visible(True)
+                    pygame.mouse.set_cursor(*pygame.cursors.arrow)  # Change to the default arrow cursor
 
             else:
                 self.screen.fill(DARK_GREEN)
